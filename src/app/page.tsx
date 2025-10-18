@@ -1,12 +1,12 @@
-import BarVisualizer from "~/components/BarVisualizer";
+import { YayNayBarVisualizer } from "~/components/BarVisualizer";
 import { VStack } from "~/components/helpers/helperdivs";
 import type { VoterPercentageBar } from "~/lib/types";
 
 const bar: VoterPercentageBar = {
   yays: {
     republican: 300,
-    democrat: 0,
-    independent: 0,
+    democrat: 50,
+    independent: 30,
   },
   nays: {
     republican: 10,
@@ -22,8 +22,8 @@ const bar: VoterPercentageBar = {
 
 const bar2: VoterPercentageBar = {
   yays: {
-    republican: 3,
-    democrat: 0,
+    republican: 30,
+    democrat: 12,
     independent: 1,
   },
   nays: {
@@ -42,8 +42,8 @@ export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#] to-[#15162c] text-white">
       <VStack gap={2} className="w-[1000px]">
-        <BarVisualizer height={20} bar={bar} />
-        <BarVisualizer height={20} bar={bar2} />
+        <YayNayBarVisualizer height={50} bar={bar} />
+        <YayNayBarVisualizer height={50} bar={bar2} />
       </VStack>
     </main>
   );

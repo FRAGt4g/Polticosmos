@@ -20,6 +20,8 @@ interface SidebarContextProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   animate: boolean;
+  sidebarWidth: number;
+  setSidebarWidth: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const SidebarContext = createContext<SidebarContextProps | undefined>(
@@ -47,6 +49,7 @@ export const SidebarProvider = ({
 }) => {
   const [openState, setOpenState] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(340);
 
   useEffect(() => {
     setIsMounted(true);
@@ -60,7 +63,9 @@ export const SidebarProvider = ({
   const setOpen = setOpenProp ?? setOpenState;
 
   return (
-    <SidebarContext.Provider value={{ open, setOpen, animate: animate }}>
+    <SidebarContext.Provider
+      value={{ open, setOpen, animate: animate, sidebarWidth, setSidebarWidth }}
+    >
       {children}
     </SidebarContext.Provider>
   );
@@ -75,25 +80,23 @@ export const SidebarBody = (
 };
 
 const ResizeHandle = ({
-  width,
-  setWidth,
   widthConstraints,
 }: {
-  width: number;
-  setWidth: (width: number) => void;
   widthConstraints?: {
     min?: number;
     max?: number;
   };
 }) => {
+  const { sidebarWidth, setSidebarWidth } = useSidebar();
+
   function handleResize(e: React.MouseEvent) {
     e.preventDefault();
     function handleMove(moveEvent: MouseEvent) {
-      setWidth(
+      setSidebarWidth(
         clamp(
           widthConstraints?.min ?? 0,
           widthConstraints?.max ?? Infinity,
-          width + (moveEvent.clientX - e.clientX),
+          sidebarWidth + (moveEvent.clientX - e.clientX),
         ),
       );
     }
@@ -143,12 +146,12 @@ export const DesktopSidebar = ({
   spacing?: number;
 }) => {
   const { setSelectedStar } = useCosmosContext();
-  const { open } = useSidebar();
+  const { open, sidebarWidth } = useSidebar();
   const [disableAnimation, setDisableAnimation] = useState(false);
-  const [width, setWidth] = useState(340);
-  const offScreen = side === "left" ? -(width + 100) : window.innerWidth + 100;
+  const offScreen =
+    side === "left" ? -(sidebarWidth + 100) : window.innerWidth + 100;
   const onScreen =
-    side === "left" ? 0 : window.innerWidth - width - 2 * spacing;
+    side === "left" ? 0 : window.innerWidth - sidebarWidth - 2 * spacing;
   const widthConstraints = { min: 400, max: 800 };
 
   useEffect(() => {
@@ -162,7 +165,7 @@ export const DesktopSidebar = ({
     <motion.div
       style={{
         height: "calc(100vh - 32px)",
-        width: width,
+        width: sidebarWidth,
         margin: spacing,
         opacity: disableAnimation ? 0 : 1,
       }}
@@ -193,11 +196,7 @@ export const DesktopSidebar = ({
           <X />
         </Button>
       </div>
-      <ResizeHandle
-        width={width}
-        setWidth={setWidth}
-        widthConstraints={widthConstraints}
-      />
+      <ResizeHandle widthConstraints={widthConstraints} />
       {children as React.ReactNode}
     </motion.div>
   );

@@ -12,11 +12,19 @@ export function createDummyBillInfo(): BillSideBarInfo {
     committeeOrigination:
       "Committee" + Math.random().toString(36).substring(2, 15),
 
-    sponsors: Array.from(
-      { length: Math.floor(Math.random() * 10) + 1 },
-      () => "Sponsor" + Math.random().toString(36).substring(2, 15),
-    ),
-    summary: "Summary" + Math.random().toString(36).substring(2, 15),
+    sponsors: Array.from({ length: Math.floor(Math.random() * 10) + 1 }, () => {
+      return {
+        name: "Sponsor" + Math.random().toString(36).substring(2, 15),
+        party:
+          Math.random() < 0.33
+            ? "Republican"
+            : Math.random() < 0.66
+              ? "Democrat"
+              : "Independent",
+      };
+    }),
+    summary:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     status: "Introduced",
     republicanSponsors: Math.floor(Math.random() * 100),
     democratSponsors: Math.floor(Math.random() * 100),
@@ -52,14 +60,14 @@ export function createDummyBillInfo(): BillSideBarInfo {
       other: {
         republican: Math.floor(Math.random() * 100) + 1,
         democrat: Math.floor(Math.random() * 100) + 1,
-        independent: Math.floor(Math.random() * 100) + 0.5,
+        independent: Math.floor(Math.random() * 100),
       },
     },
     senateVoterPercentageBar: {
       yays: {
         republican: Math.floor(Math.random() * 100) + 1,
         democrat: Math.floor(Math.random() * 100) + 1,
-        independent: Math.floor(Math.random() * 100) + 0.5,
+        independent: Math.floor(Math.random() * 100),
       },
       nays: {
         republican: Math.floor(Math.random() * 100) + 1,
@@ -69,7 +77,7 @@ export function createDummyBillInfo(): BillSideBarInfo {
       other: {
         republican: Math.floor(Math.random() * 100) + 1,
         democrat: Math.floor(Math.random() * 100) + 1,
-        independent: Math.floor(Math.random() * 100) + 0.5,
+        independent: Math.floor(Math.random() * 100),
       },
     },
     mediaCoverage:

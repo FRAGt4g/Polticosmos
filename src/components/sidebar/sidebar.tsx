@@ -5,7 +5,7 @@ import {
   SidebarBody,
   SidebarProvider,
 } from "~/components/sidebar/sidebar-components";
-import { BillSidebarSummary } from "../bill-summary";
+import { BillSidebarSummary } from "./sidebar-bill-summary";
 
 export default function Sidebar({ side }: { side?: "left" | "right" }) {
   const { selectedStar: bill, setSelectedStar } = useCosmosContext();

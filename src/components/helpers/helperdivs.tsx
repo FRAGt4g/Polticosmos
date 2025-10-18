@@ -27,7 +27,7 @@ export const VStack = forwardRef<HTMLDivElement, VerticalDivProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex flex-col", className, {
+        className={cn("flex w-full flex-col", className, {
           "items-start": _xSpacing === "left",
           "items-center": _xSpacing === "center",
           "items-end": _xSpacing === "right",

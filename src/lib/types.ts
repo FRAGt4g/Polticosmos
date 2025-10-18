@@ -1,7 +1,7 @@
 export type BillSideBarInfo = {
   name: string;
   committeeOrigination: string;
-  sponsors: string[];
+  sponsors: Sponsor[];
   summary: string;
   republicanSponsors: number;
   democratSponsors: number;
@@ -12,6 +12,11 @@ export type BillSideBarInfo = {
   mediaCoverage: string;
   linkToPdf: URL;
   status: BillStatus;
+};
+
+export type Sponsor = {
+  name: string;
+  party: "Republican" | "Democrat" | "Independent";
 };
 
 export type BillStatus =
