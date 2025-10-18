@@ -1,4 +1,5 @@
 import { FileText } from "lucide-react";
+import ScrollArea from "~/components/helpers/scroll-area-fade";
 import {
   type BillSideBarInfo,
   type BillStatus,
@@ -8,7 +9,6 @@ import { cn } from "~/lib/utils";
 import { SingleBarVisualizer, YayNayBarVisualizer } from "../BarVisualizer";
 import { HStack, VStack } from "../helpers/helperdivs";
 import { Button } from "../imported/ShadCN/button";
-import ScrollArea from "../scroll-area-fade";
 
 const StatusChip = ({ status }: { status: BillStatus }) => {
   const statusColors = {
