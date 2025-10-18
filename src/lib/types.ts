@@ -11,8 +11,16 @@ export type BillSideBarInfo = {
   senateVoterPercentageBar: VoterPercentageBar;
   mediaCoverage: string;
   linkToPdf: URL;
-  status: "Introduced" | "House" | "Senate" | "President" | "Failed" | "Passed";
+  status: BillStatus;
 };
+
+export type BillStatus =
+  | "Introduced"
+  | "House"
+  | "Senate"
+  | "President"
+  | "Failed"
+  | "Passed";
 
 export type VoterPercentageBar = {
   yays: {
@@ -39,3 +47,20 @@ export type Preferences = {
 
 export type PREFERENCE_Theme = "dark" | "light" | "system";
 export type PREFERENCE_SidebarChoice = "left" | "right";
+
+export interface Star {
+  id: number;
+  name: string;
+  constellation: string;
+  distance: string;
+  magnitude: number;
+  spectralType: string;
+  description: string;
+  facts: string[];
+  x: number;
+  y: number;
+  size: number;
+  color: string;
+  twinkleDelay: number;
+  bill?: BillSideBarInfo;
+}
