@@ -11,10 +11,11 @@ export function createDummyBillInfo(): BillSideBarInfo {
     name: "Bill" + Math.random().toString(36).substring(2, 15),
     committeeOrigination:
       "Committee" + Math.random().toString(36).substring(2, 15),
-    sponsors: [
-      "Sponsor" + Math.random().toString(36).substring(2, 15),
-      "Sponsor" + Math.random().toString(36).substring(2, 15),
-    ],
+
+    sponsors: Array.from(
+      { length: Math.floor(Math.random() * 10) + 1 },
+      () => "Sponsor" + Math.random().toString(36).substring(2, 15),
+    ),
     summary: "Summary" + Math.random().toString(36).substring(2, 15),
     status: "Introduced",
     republicanSponsors: Math.floor(Math.random() * 100),

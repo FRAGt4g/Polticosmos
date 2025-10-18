@@ -1,10 +1,12 @@
 "use client";
-import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { clamp, motion } from "framer-motion";
+import { X } from "lucide-react";
 import Link, { type LinkProps } from "next/link";
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { cn } from "~/lib/utils";
+import { Button } from "../imported/ShadCN/button";
+import { useCosmosContext } from "../providers/cosmos-provider";
 
 export interface Links {
   label: string;
@@ -69,11 +71,64 @@ export const SidebarBody = (
     side?: "left" | "right";
   },
 ) => {
+  return <DesktopSidebar {...props} />;
+};
+
+const ResizeHandle = ({
+  width,
+  setWidth,
+  widthConstraints,
+}: {
+  width: number;
+  setWidth: (width: number) => void;
+  widthConstraints?: {
+    min?: number;
+    max?: number;
+  };
+}) => {
+  function handleResize(e: React.MouseEvent) {
+    e.preventDefault();
+    function handleMove(moveEvent: MouseEvent) {
+      setWidth(
+        clamp(
+          widthConstraints?.min ?? 0,
+          widthConstraints?.max ?? Infinity,
+          width + (moveEvent.clientX - e.clientX),
+        ),
+      );
+    }
+
+    // Handler for when resizing ends (mouse up/touch end)
+    function handleEnd() {
+      document.removeEventListener("mousemove", handleMove);
+      document.removeEventListener("mouseup", handleEnd);
+    }
+
+    // Add event listeners to handle the resize operation
+    // We add these to document so we can catch events even if the mouse moves outside the resizer
+    document.addEventListener("mousemove", handleMove);
+    document.addEventListener("mouseup", handleEnd);
+  }
+
   return (
-    <>
-      <DesktopSidebar {...props} />
-      <MobileSidebar {...(props as React.ComponentProps<"div">)} />
-    </>
+    <div
+      className="absolute top-0 right-0 z-10 h-full w-[4px] cursor-col-resize bg-transparent"
+      style={{
+        userSelect: "none",
+        touchAction: "none",
+      }}
+      onMouseDown={(e) => {
+        handleResize(e);
+
+        const element = e.currentTarget;
+        function onMouseUp() {
+          element.blur();
+          window.removeEventListener("mouseup", onMouseUp);
+        }
+
+        window.addEventListener("mouseup", onMouseUp);
+      }}
+    />
   );
 };
 
@@ -81,20 +136,20 @@ export const DesktopSidebar = ({
   className,
   children,
   side = "left",
+  spacing = 16,
   ...props
 }: React.ComponentProps<typeof motion.div> & {
   side?: "left" | "right";
+  spacing?: number;
 }) => {
-  // –– STYLING ––
-  const width = 340;
-  const spacing = 16;
-  // –––––––––––––
-
-  const [disableAnimation, setDisableAnimation] = useState(false);
+  const { setSelectedStar } = useCosmosContext();
   const { open } = useSidebar();
+  const [disableAnimation, setDisableAnimation] = useState(false);
+  const [width, setWidth] = useState(340);
   const offScreen = side === "left" ? -(width + 100) : window.innerWidth + 100;
   const onScreen =
     side === "left" ? 0 : window.innerWidth - width - 2 * spacing;
+  const widthConstraints = { min: 400, max: 800 };
 
   useEffect(() => {
     setDisableAnimation(true);
@@ -129,58 +184,22 @@ export const DesktopSidebar = ({
       }}
       {...props}
     >
-      {children}
-    </motion.div>
-  );
-};
-
-export const MobileSidebar = ({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<"div">) => {
-  const { open, setOpen } = useSidebar();
-  return (
-    <>
-      <div
-        className={cn(
-          "flex h-10 w-full flex-row items-center justify-between bg-neutral-100 px-4 py-4 md:hidden dark:bg-neutral-800",
-        )}
-        {...props}
-      >
-        <div className="z-20 flex w-full justify-end">
-          <Menu
-            className="text-neutral-800 dark:text-neutral-200"
-            onClick={() => setOpen(!open)}
-          />
-        </div>
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              initial={{ x: "-100%", opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: "-100%", opacity: 0 }}
-              transition={{
-                duration: 0.3,
-                ease: "easeInOut",
-              }}
-              className={cn(
-                "fixed inset-0 z-[100] flex h-full w-full flex-col justify-between bg-white p-10 dark:bg-neutral-900",
-                className,
-              )}
-            >
-              <div
-                className="absolute top-10 right-10 z-50 text-neutral-800 dark:text-neutral-200"
-                onClick={() => setOpen(!open)}
-              >
-                <X />
-              </div>
-              {children}
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div className="absolute top-0 right-0 z-10">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setSelectedStar(null)}
+        >
+          <X />
+        </Button>
       </div>
-    </>
+      <ResizeHandle
+        width={width}
+        setWidth={setWidth}
+        widthConstraints={widthConstraints}
+      />
+      {children as React.ReactNode}
+    </motion.div>
   );
 };
 
