@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { HStack } from "~/components/helpers/helperdivs";
 import { cn } from "~/lib/utils";
-import { HStack } from "./helpers/helperdivs";
 
 export default function ScrollArea({
   gradientEnd = "from-primary/90 via-primary/20",
