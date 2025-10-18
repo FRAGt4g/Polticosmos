@@ -3,7 +3,7 @@
 import { Sparkles } from "lucide-react";
 import type { BillSideBarInfo } from "~/lib/types";
 import { createDummyBillInfo } from "~/lib/utils";
-import { useCosmosContext } from "./cosmos-provider";
+import { useCosmosContext } from "../../components/providers/cosmos-provider";
 
 interface Star {
   id: number;

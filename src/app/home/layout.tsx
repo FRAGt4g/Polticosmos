@@ -1,8 +1,8 @@
 "use client";
 
-import Sidebar from "~/components/sidebar";
+import Sidebar from "~/components/sidebar/sidebar";
 import "~/styles/globals.css";
-import { CosmosProvider } from "../cosmos-provider";
+import { CosmosProvider } from "../../components/providers/cosmos-provider";
 
 export default function StarryNightLayout({
   children,

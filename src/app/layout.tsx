@@ -1,6 +1,6 @@
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
-import { PreferencesProvider } from "~/components/preferences-provider";
+import { PreferencesProvider } from "~/components/providers/preferences-provider";
 import "~/styles/globals.css";
 
 export const metadata: Metadata = {

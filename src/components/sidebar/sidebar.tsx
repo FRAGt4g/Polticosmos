@@ -11,21 +11,24 @@ import {
   Users,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useCosmosContext } from "~/app/cosmos-provider";
-import { HStack } from "~/components/helperdivs";
-import { isDarkMode, usePreferences } from "~/components/preferences-provider";
-import { Button } from "~/components/ui/button";
+import { HStack } from "~/components/helpers/helperdivs";
+import { Button } from "~/components/imported/ShadCN/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "~/components/imported/ShadCN/tooltip";
+import { useCosmosContext } from "~/components/providers/cosmos-provider";
+import {
+  isDarkMode,
+  usePreferences,
+} from "~/components/providers/preferences-provider";
 import {
   SidebarBody,
   SidebarLink,
   SidebarProvider,
   type Links,
-} from "~/components/ui/sidebar-components";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
+} from "~/components/sidebar/sidebar-components";
 
 export default function Sidebar({ side }: { side?: "left" | "right" }) {
   const pathname = usePathname();

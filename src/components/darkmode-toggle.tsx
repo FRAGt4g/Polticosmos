@@ -1,5 +1,8 @@
 import { Computer, Moon, Sun } from "lucide-react";
-import { isDarkMode, usePreferences } from "~/components/preferences-provider";
+import {
+  isDarkMode,
+  usePreferences,
+} from "~/components/providers/preferences-provider";
 
 const DarkModeToggle = (props: {
   showAllOptions?: boolean;

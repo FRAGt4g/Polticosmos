@@ -1,4 +1,4 @@
-import StarryNightSky from "~/app/starrynight";
+import StarryNightSky from "~/app/home/starrynight";
 
 const StarryNightPage = () => {
   return <StarryNightSky />;
