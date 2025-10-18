@@ -1,7 +1,12 @@
-import BillInfo from "~/components/BillInfo";
-import { type BillSideBarInfo } from "~/lib/types";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+import type { BillSideBarInfo } from "./types";
 
-function createDummyBillInfo(): BillSideBarInfo {
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+export function createDummyBillInfo(): BillSideBarInfo {
   const billInfo: BillSideBarInfo = {
     name: "Bill" + Math.random().toString(36).substring(2, 15),
     committeeOrigination:
@@ -71,16 +76,4 @@ function createDummyBillInfo(): BillSideBarInfo {
     linkToPdf: new URL("https://www.google.com"),
   };
   return billInfo;
-}
-
-export default function HomePage() {
-  const bills = Array.from({ length: 10 }, () => createDummyBillInfo());
-
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#] to-[#15162c] text-white">
-      {bills.map((bill: BillSideBarInfo, index: number) => (
-        <BillInfo key={index} bill={bill} />
-      ))}
-    </main>
-  );
 }
