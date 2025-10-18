@@ -148,10 +148,18 @@ export const DesktopSidebar = ({
   const { setSelectedStar } = useCosmosContext();
   const { open, sidebarWidth } = useSidebar();
   const [disableAnimation, setDisableAnimation] = useState(false);
-  const offScreen =
-    side === "left" ? -(sidebarWidth + 100) : window.innerWidth + 100;
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  useEffect(() => {
+    const updateWindowWidth = () => setWindowWidth(window.innerWidth);
+    updateWindowWidth();
+    window.addEventListener("resize", updateWindowWidth);
+    return () => window.removeEventListener("resize", updateWindowWidth);
+  }, []);
+
+  const offScreen = side === "left" ? -(sidebarWidth + 100) : windowWidth + 100;
   const onScreen =
-    side === "left" ? 0 : window.innerWidth - sidebarWidth - 2 * spacing;
+    side === "left" ? 0 : windowWidth - sidebarWidth - 2 * spacing;
   const widthConstraints = { min: 400, max: 800 };
 
   useEffect(() => {

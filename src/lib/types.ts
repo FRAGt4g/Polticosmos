@@ -1,3 +1,12 @@
+export interface StarObject {
+  position: [number, number, number];
+  scale: number;
+}
+
+export type StarMatrix = {
+  objects: StarObject[];
+};
+
 export type BillSideBarInfo = {
   name: string;
   committeeOrigination: string;
