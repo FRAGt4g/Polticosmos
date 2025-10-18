@@ -31,7 +31,7 @@ CATEGORIES = [
     "Family & Social Services"
 ]
 
-def call_gemmini_api(bill_text, tags, categories):
+def call_gemini_api(bill_text, tags, categories):
     # Construct the prompt to guide the LLM
     prompt = f"""
     You are tasked with processing a congressional bill. Here is the bill text:
@@ -69,7 +69,7 @@ def save_LLM_response_to_json(response_text, filename="bill_summary.json"):
 
 def process_bill(bill_text, tags, categories):
     # Call the Gemmini API to get the bill summary, tags, and category
-    response_text = call_gemmini_api(bill_text, tags, categories)
+    response_text = call_gemini_api(bill_text, tags, categories)
 
     # If the result is valid, save the output to a JSON file
     if result:
