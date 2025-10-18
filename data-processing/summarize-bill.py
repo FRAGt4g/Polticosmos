@@ -63,7 +63,8 @@ def call_gemmini_api(bill_text, tags, categories):
 # Define the function to save the output to a JSON file
 def save_LLM_response_to_json(response_text, filename="bill_summary.json"):
     output_data = json.loads(response_text)
-    with open(filename, "w") as f:
+    output_dir = f"../bill-data/{output_data["category"]}/"
+    with open(output_dir + filename, "w") as f:
         json.dump(output_data, f, indent=4)
 
 def process_bill(bill_text, tags, categories):
@@ -74,4 +75,5 @@ def process_bill(bill_text, tags, categories):
     if result:
         save_LLM_response_to_json(response_text)
 
-process_bill("Some bill text...", TAGS, CATEGORIES)
+if __name__ == '__main__':
+    process_bill("Some bill text...", TAGS, CATEGORIES)
