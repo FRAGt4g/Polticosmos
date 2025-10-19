@@ -1,12 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  ChevronLeft,
-  ArrowRight,
-  ChevronDown,
-  ChevronRight,
-  FileText,
-  X,
-} from "lucide-react";
+import { ArrowRight, ChevronDown, FileText, X } from "lucide-react";
 import { useState } from "react";
 import ScrollArea from "~/components/helpers/scroll-area-fade";
 import {
@@ -21,6 +14,7 @@ import {
 import { cn, formatBillStatus, parseRepString } from "~/lib/utils";
 import { SingleBarVisualizer, YayNayBarVisualizer } from "../BarVisualizer";
 import { HStack, VStack } from "../helpers/helperdivs";
+import { NextBill, PreviousBill } from "../pagination-buttons";
 import { useCosmosContext } from "../providers/cosmos-provider";
 
 const StatusChip = ({
@@ -321,17 +315,16 @@ export const BillSidebarSummary = ({ bill }: { bill: Bill }) => {
       <HStack
         xSpacing="between"
         ySpacing="middle"
-        className="absolute right-0 bottom-0 z-10 mr-4 mb-4"
+        className="absolute right-0 bottom-0 z-10 w-full p-4"
       >
         <motion.button
           className={cn(
-            "text-muted-foreground bg-primary hover:bg-primary/90 flex cursor-pointer items-center gap-2 rounded-full p-2 text-sm font-medium",
+            "text-muted-foreground bg-primary hover:bg-primary/90 flex cursor-pointer items-center gap-2 rounded-full p-2 text-sm font-light",
             "shadow-sm shadow-black hover:shadow-md",
           )}
-          whileHover={{ scale: 1.1 }}
+          whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 0.9 }}
           transition={{ duration: 0.2 }}
-          //TODO: Add actual link to pdf
           onClick={() =>
             window.open(
               `https://www.congress.gov/bill/${bill.congress}th-congress/${bill.type == "hr" ? "house" : "senate"}-bill/${bill.number}`,
@@ -339,9 +332,13 @@ export const BillSidebarSummary = ({ bill }: { bill: Bill }) => {
             )
           }
         >
-          <FileText />
-          Library of Congress
+          <FileText className="size-4" />
         </motion.button>
+
+        <HStack xSpacing="between" ySpacing="middle">
+          <PreviousBill />
+          <NextBill />
+        </HStack>
 
         <motion.button
           className={cn(

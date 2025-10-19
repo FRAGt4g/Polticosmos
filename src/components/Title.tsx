@@ -3,6 +3,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
+import { HStack } from "./helpers/helperdivs";
+import { RandomBill } from "./pagination-buttons";
 import { useCosmosContext } from "./providers/cosmos-provider";
 import { useSidebar } from "./sidebar/sidebar-components";
 
@@ -43,28 +45,41 @@ const Title = () => {
             Explore the Stars
             <Sparkles className="text-accent h-8 w-8" />
           </h1>
-          {!openedBill ? <p className="text-muted-foreground text-sm md:text-base">
-            Click on any star to discover its secrets or ⌘ + K to search for a
-            bill
-          </p> : <div className={"flex flex-col items-center"}>
+          {!openedBill ? (
             <p className="text-muted-foreground text-sm md:text-base">
-              When ready, flip this switch to see how many bills become laws.
+              Click on any star to discover its secrets or ⌘ + K to search for a
+              bill
             </p>
-            <div className="flex items-center gap-1 mt-3">
-              <button
-                onClick={() => setLawOnly(!lawOnly)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 ${
-                  lawOnly ? "bg-blue-600" : "bg-gray-300"
-                }`}
-              >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
-                  lawOnly ? "translate-x-5" : "translate-x-1"
-                }`}
-              />
-              </button>
+          ) : (
+            <div className={"flex flex-col items-center"}>
+              <p className="text-muted-foreground text-sm md:text-base">
+                When ready, flip this switch to see how many bills become laws.
+                The shuffle button will show you a random bill.
+              </p>
+              <div
+                id="next-bill"
+                className="mt-3 flex w-full items-center justify-center gap-1 bg-red-500"
+              ></div>
+              <div className="mt-3 flex items-center gap-1">
+                <HStack centered gap={15}>
+                  <button
+                    onClick={() => setLawOnly(!lawOnly)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 ${
+                      lawOnly ? "bg-blue-600" : "bg-gray-300"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300 ${
+                        lawOnly ? "translate-x-5" : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                  <RandomBill />
+                </HStack>
+              </div>
+              <div className="mt-3 flex items-center gap-1"></div>
             </div>
-          </div>}
+          )}
         </motion.div>
       )}
     </AnimatePresence>
