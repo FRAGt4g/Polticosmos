@@ -1,0 +1,13 @@
+{
+    "summary": "This bill addresses the issue of content scraping, specifically focusing on the use of robots.txt and rate limiting. It advises entities to respect robots.txt rules and provides an alternative method for accessing bulk data through the GPO.gov Bulk Data Download service (https://www.gpo.gov/fdsys/bulkdata). The bill implicitly hints at potential penalties or access limitations for non-compliant actors.",
+    "tags": [
+        "Technology regulation",
+        "Privacy",
+        "Transparency",
+        "Consumer protection",
+        "Cybersecurity",
+        "Federal agency action",
+        "Public safety"
+    ],
+    "category": "Technology & Innovation"
+}

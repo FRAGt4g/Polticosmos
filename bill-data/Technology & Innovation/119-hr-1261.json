@@ -1,0 +1,10 @@
+{
+    "summary": "This bill addresses the issue of web scrapers accessing government data. It instructs users to respect robots.txt rules and acknowledges IP rate limiting. Furthermore, the bill directs users to utilize the Government Publishing Office (GPO) bulk data download service (https://www.gpo.gov/fdsys/bulkdata/) as an alternative method for accessing data.",
+    "tags": [
+        "Technology regulation",
+        "Transparency",
+        "Privacy",
+        "Federal agency action"
+    ],
+    "category": "Technology & Innovation"
+}

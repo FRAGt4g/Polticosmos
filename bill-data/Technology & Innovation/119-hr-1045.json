@@ -1,0 +1,11 @@
+{
+    "summary": "This bill addresses the issue of content scraping, specifically focusing on the behavior of scrapers. It advises adherence to robots.txt and notes that the scraper's IP has been rate-limited. It provides a link to the GPO.gov Bulk Data Download as an alternative data source. The bill's intention seems to relate to promoting ethical web scraping practices, respecting website terms of service, and potentially providing alternative methods for data access.",
+    "tags": [
+        "Technology regulation",
+        "Privacy",
+        "Transparency",
+        "Consumer protection",
+        "Cybersecurity"
+    ],
+    "category": "Technology & Innovation"
+}

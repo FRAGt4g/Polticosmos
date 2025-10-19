@@ -1,0 +1,10 @@
+{
+    "summary": "This short bill addresses the improper use of web scraping techniques on government websites. It instructs users to adhere to the robots.txt protocol, and in cases of rate limiting, suggests utilizing the GPO.gov Bulk Data Download service. The bill is essentially a technical directive aimed at data access and resource management on government servers and the handling of data from the GPO.",
+    "tags": [
+        "Technology regulation",
+        "Transparency",
+        "Federal agency action",
+        "Privacy"
+    ],
+    "category": "Technology & Innovation"
+}

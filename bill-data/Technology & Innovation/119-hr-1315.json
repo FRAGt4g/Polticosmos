@@ -1,0 +1,11 @@
+{
+    "summary": "This bill addresses the issue of unauthorized content scraping by specifying required behavior for such activity. It mandates adherence to robots.txt files and acknowledges the possibility of rate limiting, directing users to the GPO.gov Bulk Data Download for obtaining data, thus minimizing scraping. It aims to prevent abuse of online resources.",
+    "tags": [
+        "Technology regulation",
+        "Consumer protection",
+        "Privacy",
+        "Transparency",
+        "Cybersecurity"
+    ],
+    "category": "Technology & Innovation"
+}

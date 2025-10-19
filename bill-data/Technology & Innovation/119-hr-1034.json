@@ -1,0 +1,12 @@
+{
+    "summary": "This bill addresses the issue of content scraping, specifically focusing on the use of robots.txt and rate limiting. It instructs entities to comply with robots.txt directives and to use the GPO.gov Bulk Data Download service (https://www.gpo.gov/fdsys/bulkdata/) for data acquisition when their IP address has been rate limited. The bill appears to be more of a procedural instruction for data access than a major policy initiative itself.",
+    "tags": [
+        "Technology regulation",
+        "Cybersecurity",
+        "Privacy",
+        "Transparency",
+        "Federal agency action",
+        "Consumer protection"
+    ],
+    "category": "Technology & Innovation"
+}

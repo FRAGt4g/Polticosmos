@@ -1,0 +1,13 @@
+{
+    "summary": "This bill addresses the issue of content scraping, specifically focusing on the behavior of scrapers on government websites. It directs scrapers to adhere to the robots.txt protocol to avoid rate limiting and suggests using the GPO.gov Bulk Data Download service for accessing large datasets. The bill aims to regulate how data is accessed and used from government resources.",
+    "tags": [
+        "Technology regulation",
+        "Cybersecurity",
+        "Privacy",
+        "Transparency",
+        "Federal agency action",
+        "Public safety",
+        "Consumer protection"
+    ],
+    "category": "Technology & Innovation"
+}

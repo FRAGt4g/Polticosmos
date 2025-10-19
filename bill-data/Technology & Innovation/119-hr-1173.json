@@ -1,0 +1,12 @@
+{
+    "summary": "This bill addresses the issue of web scraping. It instructs scrapers to adhere to the robots.txt protocol and acknowledges that IP addresses may be rate-limited. It suggests utilizing the GPO.gov Bulk Data Download service as an alternative to scraping. The bill appears to be a basic guideline with no specifics on penalties or enforcements, focusing on responsible data collection from government resources.",
+    "tags": [
+        "Technology regulation",
+        "Cybersecurity",
+        "Consumer protection",
+        "Privacy",
+        "Transparency",
+        "Federal agency action"
+    ],
+    "category": "Technology & Innovation"
+}

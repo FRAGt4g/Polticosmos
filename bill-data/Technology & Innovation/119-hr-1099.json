@@ -1,0 +1,11 @@
+{
+    "summary": "This bill addresses the issue of unauthorized data scraping from government websites, specifically focusing on the use of robots.txt for compliance and offering an alternative method for bulk data download via GPO.gov. It introduces measures to protect government resources from misuse and ensures a proper channel for accessing the information via rate limiting and redirects to designated download interfaces.  It touches on responsible use of public data resources.",
+    "tags": [
+        "Technology regulation",
+        "Privacy",
+        "Consumer protection",
+        "Transparency",
+        "Federal agency action"
+    ],
+    "category": "Technology & Innovation"
+}
