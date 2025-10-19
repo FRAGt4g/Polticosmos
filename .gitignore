@@ -3,7 +3,6 @@
 # dependencies
 /node_modules
 data-processing/similarityMatrix.txt
-bill-data/
 /.pnp
 .pnp.js
 
