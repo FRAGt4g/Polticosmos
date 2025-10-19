@@ -1,19 +1,29 @@
 "use client";
 
 import { useEffect } from "react";
-import { getBills, getBillsFromRep } from "./api/safeFetches";
+import { getAllReps } from "./api/safeFetches";
 
 export default function HomePage() {
   useEffect(() => {
     console.log("HomePage");
 
     async function bar() {
-      const bills = await getBills({ congress: 119 });
-      const bill = bills[0];
-      console.log("Bills: ", bills);
+      const reps = await getAllReps();
+      console.log("Reps: ", reps);
 
-      const billsFromRep = await getBillsFromRep(bill!.sponsors[0]!);
-      console.log("Bills from rep: ", billsFromRep);
+      const rep = reps.find((rep) => {
+        for (const [key, value] of Object.entries(rep)) {
+          if (value === "Rep00067") {
+            return true;
+          }
+        }
+        return false;
+      });
+      if (rep) {
+        console.log("Rep: ", rep);
+      } else {
+        console.log("Rep not found");
+      }
     }
 
     void bar();

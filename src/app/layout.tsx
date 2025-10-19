@@ -19,7 +19,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`}>
-      <body>
+      <body className="bg-black">
         <PreferencesProvider>{children}</PreferencesProvider>
       </body>
     </html>

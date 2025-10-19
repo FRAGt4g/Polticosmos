@@ -3,8 +3,24 @@ import { useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import { type Group, Mesh, type MeshLambertMaterial, Scene } from "three";
 import type { StarObject } from "~/lib/types";
+import { useCosmosContext } from "../providers/cosmos-provider";
 import NameOverlay from "./NameOverlay";
 import { usePreferences } from "../providers/preferences-provider";
+
+
+function cloneWithUniqueMaterials(scene: any) {
+    const clone = scene.clone(true);
+  
+    clone.traverse((obj: any) => {
+      if (obj.isMesh) {
+        // Duplicate the material so it’s not shared
+        obj.material = obj.material.clone();
+      }
+    });
+  
+    return clone;
+  }
+  
 
 function cloneWithUniqueMaterials(scene: any) {
     const clone = scene.clone(true);
@@ -31,11 +47,11 @@ const StarModel = ({
   ...starProps
 }: StarObject & { index: number }) => {
   const { scene } = useGLTF("/models/Star.glb");
-  const { shouldShowTitle, setShouldShowTitle } = usePreferences();
+  const { selectBill } = useCosmosContext();
   const meshRef = useRef<Group>(null);
 
   const handleClick = () => {
-    console.log(`Star clicked! Name: ${name}, Index in matrix: ${index}`);
+    selectBill(starProps.billId);
   };
 
   const clonedScene = cloneWithUniqueMaterials(scene);
@@ -46,7 +62,7 @@ const StarModel = ({
     scale,
     h, s, l,
     name,
-    ...starProps
+    ...starProps,
   };
 
   const [randomRotation, _] = useState<[number, number, number]>([Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI]);
@@ -65,7 +81,7 @@ const StarModel = ({
         scale={scale}
         onClick={handleClick}
       />
-      <NameOverlay 
+      <NameOverlay
         star={starObject}
         position={position}
         maxDistance={8}
