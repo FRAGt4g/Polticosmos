@@ -1,11 +1,11 @@
 {
-    "summary": "This bill appears to address the behavior of content scrapers. It instructs scrapers to respect 'robots.txt' and indicates that IP addresses may be rate-limited. It directs users to use the GPO.gov Bulk Data Download service for accessing large datasets, likely aimed at preventing unapproved data scraping and ensuring data accessibility through a proper channel. The focus is on regulating the access and use of government data resources.",
+    "summary": "The 'Improving Contractor Cybersecurity Act' mandates that information technology contractors for executive agencies establish vulnerability disclosure policies. These policies must detail how vulnerabilities are reported, address testing limitations, outline communication procedures, and provide timelines for response and resolution. Contractors must also report critical vulnerabilities to the Cybersecurity and Infrastructure Security Agency (CISA). The CISA will further communicate with relevant databases and the NIST. The bill emphasizes transparency and aims to improve cybersecurity for government IT systems and protect public systems.",
     "tags": [
+        "Cybersecurity",
         "Technology regulation",
-        "Privacy",
-        "Transparency",
+        "National security",
         "Consumer protection",
-        "Federal agency action"
+        "Transparency"
     ],
     "category": "Technology & Innovation"
 }

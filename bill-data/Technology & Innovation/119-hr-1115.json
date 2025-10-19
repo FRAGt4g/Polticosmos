@@ -1,11 +1,11 @@
 {
-    "summary": "This bill addresses the issue of \"Misbehaving Content Scrapers,\" likely referring to internet bots or programs that are improperly accessing and collecting data from websites. The bill instructs these scrapers to respect robots.txt rules and to utilize the GPO.gov Bulk Data Download service (https://www.gpo.gov/fdsys/bulkdata/) as an alternative if their IP address has been rate limited. The aim is to regulate web scraping activities and provide appropriate data access methods.",
+    "summary": "The Weather Radar Coverage Improvement Act mandates the development of a plan to replace the existing NEXRAD weather radar system with a next-generation system by 2040. It includes provisions for a testbed to evaluate commercial radar options, address coverage gaps using third-party services, and consider weather camera systems. The Under Secretary is also required to provide Congress with periodic updates on the implementation of this plan. The bill aims to improve weather forecasting accuracy and coverage.",
     "tags": [
         "Technology regulation",
-        "Privacy",
-        "Consumer protection",
-        "Transparency",
-        "Federal agency action",
+        "Public safety",
+        "Emergency response",
+        "Infrastructure projects",
+        "Natural disaster recovery",
         "Cybersecurity"
     ],
     "category": "Technology & Innovation"

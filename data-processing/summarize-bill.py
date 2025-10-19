@@ -61,14 +61,13 @@ def get_bill_text(uid):
     """Scrape bill text from congress.gov XML."""
     try:
         congress, chamber, number = uid.split("-")
-        xml = requests.get(
-            f"https://www.congress.gov/{congress}/bills/{chamber}{number}/BILLS-{congress}{chamber}{number}ih.xml",
-            timeout=10
-        ).text
-        if 'DOCTYPE html' in xml:
-            print(f"https://www.congress.gov/{congress}/bills/{chamber}{number}/BILLS-{congress}{chamber}{number}ih.xml")
-            os._exit(0)
-        return xml_to_text(xml)
+        for magic in ['i'+chamber[0], 'r'+chamber[0], 'e'+chamber[0], 'rfs', 'rfh', 'pc'+chamber[0], 'enr']:
+            code = f"{congress}{chamber}{number}{magic}"
+            xml = requests.get(f"https://www.govinfo.gov/content/pkg/BILLS-{code}/xml/BILLS-{code}.xml", timeout=10).text
+            if 'DOCTYPE html' in xml: continue
+            
+            return xml_to_text(xml)
+        raise RuntimeError(f"{uid} FAILED")
     except Exception as e:
         print(f"Failed to fetch bill {uid}: {e}")
         return ""
@@ -124,13 +123,12 @@ def process_bill(uid):
     bill_text = get_bill_text(uid)
     if not bill_text:
         return f"{uid}: Failed to fetch text."
-    return "fetched text."
-    #response_text = call_gemini_api(bill_text, TAGS, CATEGORIES)
-    #if not response_text:
-    #    return f"{uid}: API error."
+    response_text = call_gemini_api(bill_text, TAGS, CATEGORIES)
+    if not response_text:
+        return f"{uid}: API error."
 
-    #save_LLM_response_to_json(response_text, f"{uid}.json")
-    #return f"{uid}: Done."
+    save_LLM_response_to_json(response_text, f"{uid}.json")
+    return f"{uid}: Done."
 
 
 if __name__ == "__main__":
