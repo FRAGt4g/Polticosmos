@@ -7,21 +7,6 @@ import { useCosmosContext } from "../providers/cosmos-provider";
 import NameOverlay from "./NameOverlay";
 import { usePreferences } from "../providers/preferences-provider";
 
-
-function cloneWithUniqueMaterials(scene: any) {
-    const clone = scene.clone(true);
-  
-    clone.traverse((obj: any) => {
-      if (obj.isMesh) {
-        // Duplicate the material so it’s not shared
-        obj.material = obj.material.clone();
-      }
-    });
-  
-    return clone;
-  }
-  
-
 function cloneWithUniqueMaterials(scene: any) {
     const clone = scene.clone(true);
   
