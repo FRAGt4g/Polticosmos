@@ -1,3 +1,5 @@
+import type { ColorInstance } from "color";
+
 export type BillReference = string;
 export type RepReference = string;
 export type VoteReference = string;
@@ -101,6 +103,9 @@ export type PREFERENCE_SidebarChoice = "left" | "right";
 export interface StarObject {
   position: [number, number, number];
   scale: number;
+  h: number;
+  s: number;
+  l: number;
   name: string;
   billId: string;
 }

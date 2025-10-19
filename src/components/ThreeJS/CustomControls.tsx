@@ -94,33 +94,15 @@ const CustomPointerLockControls = () => {
   }, [camera, gl]);
 
   useFrame((state, delta) => {
-    const moveSpeed = 5;
-    const acceleration = 15;
-    const deceleration = 8;
+    const moveSpeed = 100;
+    const acceleration = 500;
+    const deceleration = 10;
     const maxSpeed = moveSpeed;
 
     const keys = keysRef.current;
     const velocity = velocityRef.current;
 
-    // Handle gentle panning to target
-    if (isPanningRef.current && targetLookAtRef.current) {
-      const currentLookAt = new Vector3();
-      camera.getWorldDirection(currentLookAt);
-      currentLookAt.multiplyScalar(10).add(camera.position);
-      
-      // Smoothly interpolate to target
-      const panSpeed = 2.0; // Adjust for faster/slower panning
-      const lerpFactor = Math.min(panSpeed * delta, 1);
-      
-      currentLookAt.lerp(targetLookAtRef.current, lerpFactor);
-      camera.lookAt(currentLookAt);
-      
-      // Check if we're close enough to target
-      if (currentLookAt.distanceTo(targetLookAtRef.current) < 0.1) {
-        isPanningRef.current = false;
-        targetLookAtRef.current = null;
-      }
-    }
+    
 
     const desiredVelocity = new Vector3(0, 0, 0);
 
@@ -149,6 +131,26 @@ const CustomPointerLockControls = () => {
       desiredVelocity.add(rightDirection.clone().multiplyScalar(1));
       isPanningRef.current = false;
     }
+
+    // Handle gentle panning to target
+    if (isPanningRef.current && targetLookAtRef.current) {
+        const currentLookAt = new Vector3();
+        camera.getWorldDirection(currentLookAt);
+        currentLookAt.multiplyScalar(10).add(camera.position);
+        
+        // Smoothly interpolate to target
+        const panSpeed = 2.0; // Adjust for faster/slower panning
+        const lerpFactor = Math.min(panSpeed * delta, 1);
+        
+        currentLookAt.lerp(targetLookAtRef.current, lerpFactor);
+        camera.lookAt(currentLookAt);
+        
+        // Check if we're close enough to target
+        if (currentLookAt.distanceTo(targetLookAtRef.current) < 0.1) {
+          isPanningRef.current = false;
+          targetLookAtRef.current = null;
+        }
+      }
 
     if (desiredVelocity.length() > 0) {
       desiredVelocity.normalize();
