@@ -24,14 +24,21 @@ function cloneWithUniqueMaterials(scene: any) {
 const StarModel = ({
   position,
   scale,
-  h,
-  s,
-  l,
+  rep_perc,
   name,
   index,
   ...starProps
 }: StarObject & { index: number }) => {
-  const { scene } = useGLTF("/models/Star.glb");
+    const models = [
+        "/models/Star1.glb", // lowest 0–0.25
+        "/models/Star1.glb", // 0.25–0.5
+        "/models/Star4.glb", // 0.5–0.75
+        "/models/Star4.glb", // 0.75–1
+      ];
+    
+      // Determine which subdivision
+      const ind = Math.floor(rep_perc * 4); 
+  const { scene } = useGLTF(models[Math.min(ind, 3)]!);
   const { selectBill } = useCosmosContext();
   const meshRef = useRef<Group>(null);
 
@@ -45,17 +52,13 @@ const StarModel = ({
   const starObject: StarObject = {
     position,
     scale,
-    h, s, l,
+    rep_perc,
     name,
     ...starProps,
   };
 
   const [randomRotation, _] = useState<[number, number, number]>([Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI]);
-  clonedScene.traverse((c:any) => {
-    if (c instanceof Mesh) {
-        (c.material as MeshLambertMaterial).emissive.setHSL(h, s, l); 
-    }
-  })  
+    
   return (
     <>
       <primitive

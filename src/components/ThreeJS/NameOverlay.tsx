@@ -15,7 +15,7 @@ interface NameOverlayProps {
 const NameOverlay = ({
   star,
   position,
-  maxDistance = 5,
+  maxDistance = 200,
   offset = 0.5,
 }: NameOverlayProps) => {
   const { camera } = useThree();

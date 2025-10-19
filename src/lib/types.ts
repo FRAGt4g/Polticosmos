@@ -166,9 +166,7 @@ export type PREFERENCE_SidebarChoice = "left" | "right";
 export interface StarObject {
   position: [number, number, number];
   scale: number;
-  h: number;
-  s: number;
-  l: number;
+  rep_perc: number;
   name: string;
   billId: string;
 }

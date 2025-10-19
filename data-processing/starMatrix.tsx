@@ -26,9 +26,7 @@ const starMatrix: StarMatrix = {
         return {
         position: [x, y, z] as [number, number, number],
         scale: Math.min(0.3 + parseFloat(attributes[i]![2]!)*0.1,4),
-        h: ((360-220)*parseFloat(attributes[i]![1]!)+220)/360,
-        s: (100*parseFloat(attributes[i]![0]!))/100,
-        l: 45/100,
+        rep_perc: parseFloat(attributes[i]![1]!),
         name: decodeURI(attributes[i]![3]!),
         billId: uids[i]!
         };
