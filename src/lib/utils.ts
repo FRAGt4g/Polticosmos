@@ -178,6 +178,6 @@ export function createDummyBillInfoSeeded(seed: number): Bill {
 //   return billInfo;
 // }
 
-export function getRandomElement<T>(array: T[]): NonNullable<T> {
+export function getRandomElement<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
 }
