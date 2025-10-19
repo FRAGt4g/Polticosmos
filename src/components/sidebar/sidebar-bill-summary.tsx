@@ -9,6 +9,7 @@ import {
   HumanReadableBillStates,
   type PartyAffiliation,
   type RepReference,
+  type Tag,
 } from "~/lib/types";
 import { cn, formatBillStatus, parseRepString } from "~/lib/utils";
 import { SingleBarVisualizer, YayNayBarVisualizer } from "../BarVisualizer";
@@ -37,59 +38,25 @@ const StatusChip = ({
   );
 };
 
-const FutureStatusChip = ({ status }: { status: BillState }) => {
-  // const statusColors: Record<BillState, string> = {
-  //   introduced: "bg-blue-500",
-  //   house: "bg-green-500",
-  //   senate: "bg-yellow-500",
-  //   conference: "bg-purple-500",
-  //   conference_house: "bg-orange-500",
-  //   conference_senate: "bg-pink-500",
-  //   conference_passed: "bg-teal-500",
-  //   president: "bg-red-500",
-  //   veto: "bg-red-500",
-  //   veto_house: "bg-orange-500",
-  //   veto_senate: "bg-pink-500",
-  //   veto_overridden: "bg-teal-500",
-  //   law: "bg-green-500",
-  // };
-
+const TagChip = ({ tag }: { tag: Tag }) => {
   return (
     <HStack
       centered
       className={cn(
-        "rounded-md bg-transparent px-3 py-1 text-xs font-bold whitespace-nowrap text-white",
-        // statusColors[status],
+        "bg-background/10 border-muted-foreground/50 rounded-md border px-3 py-1 text-xs font-bold whitespace-nowrap text-white backdrop-blur-md",
       )}
     >
-      {HumanReadableBillStates[status]}
+      {tag}
     </HStack>
   );
 };
 
 const LargeStatusChip = ({ status }: { status: BillState }) => {
-  // const statusColors: Record<BillState, string> = {
-  //   introduced: "bg-blue-500",
-  //   house: "bg-green-500",
-  //   senate: "bg-yellow-500",
-  //   conference: "bg-purple-500",
-  //   conference_house: "bg-orange-500",
-  //   conference_senate: "bg-pink-500",
-  //   conference_passed: "bg-teal-500",
-  //   president: "bg-red-500",
-  //   veto: "bg-red-500",
-  //   veto_house: "bg-orange-500",
-  //   veto_senate: "bg-pink-500",
-  //   veto_overridden: "bg-teal-500",
-  //   law: "bg-green-500",
-  // };
-
   return (
     <HStack
       centered
       className={cn(
         "bg-background/30 text-md rounded-md px-3 py-1 font-bold whitespace-nowrap text-white",
-        // statusColors[status],
       )}
     >
       {formatBillStatus(status)}
@@ -126,11 +93,12 @@ const SponsorsChip = ({ sponsor }: { sponsor: RepReference }) => {
 };
 
 export const BillSidebarSummary = ({ bill }: { bill: Bill }) => {
-  const { deselectBill, loadedVotes } = useCosmosContext();
-  console.log(`Bill sidebar summary`, bill);
+  const { deselectBill, loadedVotes, loadedCategories } = useCosmosContext();
+  console.log(`Bill sidebar summary`, bill, loadedCategories);
   const houseBar = loadedVotes[bill.house_vote];
   const senateBar = loadedVotes[bill.senate_vote];
   const [isOpen, setIsOpen] = useState(false);
+  const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const mostRecentState = bill.states[bill.states.length - 1];
   console.log(`Most recent state`, mostRecentState, bill.states);
   const futureStates = (
@@ -139,7 +107,11 @@ export const BillSidebarSummary = ({ bill }: { bill: Bill }) => {
   console.log(`Future states`, futureStates);
 
   return (
-    <VStack xSpacing="center" gap={10} className="py-4">
+    <VStack
+      xSpacing="center"
+      gap={10}
+      className="max-h-full overflow-y-auto py-4"
+    >
       <VStack xSpacing="center">
         {/* Header */}
         <HStack className="w-full px-3" xSpacing="between" ySpacing="middle">
@@ -176,12 +148,49 @@ export const BillSidebarSummary = ({ bill }: { bill: Bill }) => {
         )}
 
         <div className="bg-muted/20 h-px w-full" />
-      </VStack>
 
+        <HStack className="w-full px-3">
+          <ScrollArea gap={1}>
+            {loadedCategories[bill.uid]!.tags.map((tag, index) => (
+              <TagChip key={index} tag={tag} />
+            ))}
+          </ScrollArea>
+        </HStack>
+      </VStack>
       {/* Description */}
-      <VStack className="w-full px-3">
-        <h2 className="text-lg font-bold">Description</h2>
-        <p className="text-muted-foreground text-sm">{bill.description}</p>
+      <VStack gap={1}>
+        <HStack
+          className="hover:bg-background/5 w-full cursor-pointer rounded-md px-2 py-1 transition-all duration-200"
+          xSpacing="between"
+          ySpacing="middle"
+          onClick={() => setIsDescriptionOpen(!isDescriptionOpen)}
+        >
+          <HStack centered className="w-fit" gap={2}>
+            <h2 className="text-lg font-bold">Description</h2>
+          </HStack>
+          <ChevronDown
+            size={20}
+            className={cn(
+              "text-muted-foreground transition-transform duration-200",
+              isDescriptionOpen ? "rotate-180" : "",
+            )}
+          />
+        </HStack>
+        <AnimatePresence>
+          {isDescriptionOpen && (
+            <motion.div
+              className="w-full px-3"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+            >
+              <p className="text-muted/70 text-sm">
+                {loadedCategories[bill.uid]!.summary}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </VStack>
 
       {/* Timeline of Status Changes */}

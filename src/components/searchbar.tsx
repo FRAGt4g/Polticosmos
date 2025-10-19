@@ -6,7 +6,7 @@ import { cn } from "~/lib/utils";
 import { HStack, VStack } from "./helpers/helperdivs";
 import { useCosmosContext } from "./providers/cosmos-provider";
 
-const SearchBar = () => {
+const SearchBar = ({ maxCount = 5 }: { maxCount?: number }) => {
   const [search, setSearch] = useState("");
   const { paused, setPaused, loadedBills, selectBill } = useCosmosContext();
   const searchRef = useRef<HTMLInputElement>(null);
@@ -20,15 +20,15 @@ const SearchBar = () => {
           bill.description.toLowerCase().includes(search.toLowerCase()) ||
           bill.number.toString().includes(search.toLowerCase()),
       )
-      .slice(0, 10)
+      .slice(0, maxCount)
       .sort((a, b) => a.title.localeCompare(b.title));
-  }, [search, loadedBills]);
+  }, [search, loadedBills, maxCount]);
 
   useEffect(() => {
     setDisplacement(
       Math.max(0, Math.min(displacement, matchingBills.length - 1)),
     );
-  }, [search, matchingBills]);
+  }, [search, matchingBills, maxCount]);
 
   useEffect(() => {
     if (paused) setSearch("");

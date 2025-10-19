@@ -1,25 +1,28 @@
 import { useGLTF } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
-import { type Group, Mesh, type MeshLambertMaterial, Scene } from "three";
+import {
+  type Group,
+  Mesh,
+  type MeshLambertMaterial,
+  type Object3D,
+  type Scene,
+} from "three";
 import type { StarObject } from "~/lib/types";
 import { useCosmosContext } from "../providers/cosmos-provider";
 import NameOverlay from "./NameOverlay";
-import { usePreferences } from "../providers/preferences-provider";
 
-function cloneWithUniqueMaterials(scene: any) {
-    const clone = scene.clone(true);
-  
-    clone.traverse((obj: any) => {
-      if (obj.isMesh) {
-        // Duplicate the material so it’s not shared
-        obj.material = obj.material.clone();
-      }
-    });
-  
-    return clone;
-  }
-  
+function cloneWithUniqueMaterials(scene: Scene) {
+  const clone = scene.clone(true);
+
+  clone.traverse((obj: Object3D) => {
+    if (obj.isMesh) {
+      // Duplicate the material so it’s not shared
+      obj.material = obj.material.clone();
+    }
+  });
+
+  return clone;
+}
 
 const StarModel = ({
   position,
@@ -45,17 +48,23 @@ const StarModel = ({
   const starObject: StarObject = {
     position,
     scale,
-    h, s, l,
+    h,
+    s,
+    l,
     name,
     ...starProps,
   };
 
-  const [randomRotation, _] = useState<[number, number, number]>([Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI]);
-  clonedScene.traverse((c:any) => {
+  const [randomRotation, _] = useState<[number, number, number]>([
+    Math.random() * 2 * Math.PI,
+    Math.random() * 2 * Math.PI,
+    Math.random() * 2 * Math.PI,
+  ]);
+  clonedScene.traverse((c: any) => {
     if (c instanceof Mesh) {
-        (c.material as MeshLambertMaterial).emissive.setHSL(h, s, l); 
+      (c.material as MeshLambertMaterial).emissive.setHSL(h, s, l);
     }
-  })  
+  });
   return (
     <>
       <primitive

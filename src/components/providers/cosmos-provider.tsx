@@ -5,7 +5,9 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { getAllBills, getAllReps, getAllVotes } from "~/app/api/safeFetches";
 import {
   type Bill,
+  type BillReference,
   type ConcatenatedBillStates,
+  type ExtraBillInformation,
   type Rep,
   type VoteResolution,
 } from "~/lib/types";
@@ -20,6 +22,10 @@ interface CosmosContextType {
   deselectBill: () => void;
   loadedReps: Record<string, Rep>;
   setLoadedReps: (reps: Record<string, Rep>) => void;
+  loadedCategories: Record<BillReference, ExtraBillInformation>;
+  setLoadedCategories: (
+    categories: Record<BillReference, ExtraBillInformation>,
+  ) => void;
   loadedVotes: Record<string, VoteResolution>;
   setLoadedVotes: (votes: Record<string, VoteResolution>) => void;
   paused: boolean;
@@ -27,6 +33,20 @@ interface CosmosContextType {
 }
 
 const CosmosContext = createContext<CosmosContextType | undefined>(undefined);
+
+async function getAllCategories(): Promise<
+  Record<BillReference, ExtraBillInformation>
+> {
+  const result = await fetch("/api/categories");
+  if (!result.ok) {
+    throw new Error(`Failed to get categories: ${result.statusText}`);
+  }
+  const data = (await result.json()) as Record<
+    BillReference,
+    ExtraBillInformation
+  >;
+  return data;
+}
 
 export function useCosmosContext() {
   const context = useContext(CosmosContext);
@@ -41,6 +61,9 @@ export function CosmosProvider({ children }: { children: React.ReactNode }) {
   const [loadedBills, setLoadedBills] = useState<Record<string, Bill>>({});
   const [selectedBill, setSelectedBill] = useState<Bill | null>(null);
   const [loadedReps, setLoadedReps] = useState<Record<string, Rep>>({});
+  const [loadedCategories, setLoadedCategories] = useState<
+    Record<BillReference, ExtraBillInformation>
+  >({});
   const [loadedVotes, setLoadedVotes] = useState<
     Record<string, VoteResolution>
   >({});
@@ -51,7 +74,9 @@ export function CosmosProvider({ children }: { children: React.ReactNode }) {
       const bills = await getAllBills();
       const reps = await getAllReps();
       const votes = await getAllVotes();
-      console.log(bills);
+      const categories = await getAllCategories();
+      setLoadedCategories(categories);
+      console.log(categories);
 
       setLoadedBills(
         bills.reduce(
@@ -113,6 +138,8 @@ export function CosmosProvider({ children }: { children: React.ReactNode }) {
     deselectBill,
     loadedReps,
     setLoadedReps,
+    loadedCategories,
+    setLoadedCategories,
     loadedVotes,
     setLoadedVotes,
     paused,
