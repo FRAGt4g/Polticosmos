@@ -1,12 +1,9 @@
 "use client";
 import { clamp, motion } from "framer-motion";
-import { X } from "lucide-react";
 import Link, { type LinkProps } from "next/link";
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { cn } from "~/lib/utils";
-import { Button } from "../imported/ShadCN/button";
-import { useCosmosContext } from "../providers/cosmos-provider";
 
 export interface Links {
   label: string;
@@ -145,7 +142,6 @@ export const DesktopSidebar = ({
   side?: "left" | "right";
   spacing?: number;
 }) => {
-  const { deselectBill } = useCosmosContext();
   const { open, sidebarWidth } = useSidebar();
   const [disableAnimation, setDisableAnimation] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
@@ -183,10 +179,7 @@ export const DesktopSidebar = ({
         stiffness: 400,
         damping: 30,
       }}
-      className={cn(
-        "fixed z-20 rounded-lg border border-gray-200 bg-white/90 shadow-lg backdrop-blur-md dark:border-gray-800 dark:bg-neutral-900/90",
-        className,
-      )}
+      className={cn("fixed z-20 rounded-lg", className)}
       initial={{
         x: open ? onScreen : offScreen,
       }}
@@ -195,14 +188,6 @@ export const DesktopSidebar = ({
       }}
       {...props}
     >
-      <div className="absolute top-0 right-0 z-10 mt-4 mr-4">
-        <Button
-          className="rounded-full border-none bg-transparent hover:bg-transparent"
-          onClick={deselectBill}
-        >
-          <X />
-        </Button>
-      </div>
       <ResizeHandle widthConstraints={widthConstraints} />
       {children as React.ReactNode}
     </motion.div>

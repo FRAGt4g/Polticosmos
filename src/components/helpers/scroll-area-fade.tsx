@@ -39,7 +39,7 @@ export default function ScrollArea({
     <div className="relative w-full">
       <HStack
         ref={scrollRef}
-        xSpacing="around"
+        xSpacing="left"
         ySpacing="middle"
         gap={gap}
         className="scrollbar-hide h-fit max-w-full overflow-x-auto overflow-y-hidden"

@@ -42,8 +42,8 @@ export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#] to-[#15162c] text-white">
       <VStack gap={2} className="w-[1000px]">
-        <YayNayBarVisualizer height={50} bar={bar} />
-        <YayNayBarVisualizer height={50} bar={bar2} />
+        <YayNayBarVisualizer height={50} reference={bar} />
+        <YayNayBarVisualizer height={50} reference={bar2} />
       </VStack>
     </main>
   );
