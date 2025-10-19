@@ -179,5 +179,5 @@ export function createDummyBillInfoSeeded(seed: number): Bill {
 // }
 
 export function getRandomElement<T>(array: T[]): NonNullable<T> {
-  return array[Math.floor(Math.random() * array.length)]!;
+  return array[Math.floor(Math.random() * array.length)];
 }
