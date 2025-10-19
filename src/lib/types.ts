@@ -1,6 +1,16 @@
 export interface StarObject {
   position: [number, number, number];
   scale: number;
+  name: string;
+  constellation?: string;
+  distance?: string;
+  magnitude?: number;
+  spectralType?: string;
+  description?: string;
+  facts?: string[];
+  color?: string;
+  twinkleDelay?: number;
+  bill?: BillSideBarInfo;
 }
 
 export type StarMatrix = {

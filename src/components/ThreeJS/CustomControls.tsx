@@ -1,11 +1,10 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
-import { Vector3 } from "three";
-import { PointerLockControls } from "three/addons/controls/PointerLockControls.js";
+import { Vector3, Vector2, Raycaster } from "three";
+import * as THREE from "three";
 
 const CustomPointerLockControls = () => {
   const { camera, gl } = useThree();
-  const controlsRef = useRef<PointerLockControls | null>(null);
   const keysRef = useRef({
     w: false,
     a: false,
@@ -13,82 +12,88 @@ const CustomPointerLockControls = () => {
     d: false,
   });
   const velocityRef = useRef(new Vector3(0, 0, 0));
+  const raycasterRef = useRef(new THREE.Raycaster());
+  const targetLookAtRef = useRef<Vector3 | null>(null);
+  const isPanningRef = useRef(false);
 
   useEffect(() => {
-    const controls = new PointerLockControls(camera, gl.domElement);
-    controlsRef.current = controls;
-
-    const handleClick = () => {
-      controls.lock();
-    };
-
-    const handlePointerLockChange = () => {
-      const isLocked = document.pointerLockElement === gl.domElement;
-      if (isLocked) {
-        console.log("Pointer locked");
-      } else {
-        console.log("Pointer unlocked");
-      }
-    };
-
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (document.pointerLockElement !== gl.domElement) return;
-
       switch (event.code) {
         case "KeyW":
+          event.preventDefault();
           keysRef.current.w = true;
           break;
         case "KeyA":
+          event.preventDefault();
           keysRef.current.a = true;
           break;
         case "KeyS":
+          event.preventDefault();
           keysRef.current.s = true;
           break;
         case "KeyD":
+          event.preventDefault();
           keysRef.current.d = true;
           break;
       }
     };
 
     const handleKeyUp = (event: KeyboardEvent) => {
-      if (document.pointerLockElement !== gl.domElement) return;
       switch (event.code) {
         case "KeyW":
+          event.preventDefault();
           keysRef.current.w = false;
           break;
         case "KeyA":
+          event.preventDefault();
           keysRef.current.a = false;
           break;
         case "KeyS":
+          event.preventDefault();
           keysRef.current.s = false;
           break;
         case "KeyD":
+          event.preventDefault();
           keysRef.current.d = false;
           break;
       }
     };
 
-    gl.domElement.addEventListener("click", handleClick);
-    document.addEventListener("pointerlockchange", handlePointerLockChange);
+    const handleMouseClick = (event: MouseEvent) => {
+      if (event.button === 0) { // Left mouse button
+        // Get mouse position in normalized device coordinates (-1 to +1)
+        const rect = gl.domElement.getBoundingClientRect();
+        const mouse = new Vector2();
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        // Create raycaster from camera through mouse position
+        const raycaster = new Raycaster();
+        raycaster.setFromCamera(mouse, camera);
+
+        // Calculate point in 3D space at a fixed distance
+        const distance = 10; // Distance from camera to look at point
+        const lookAtPoint = new Vector3();
+        raycaster.ray.at(distance, lookAtPoint);
+
+        // Set target for gentle panning
+        targetLookAtRef.current = lookAtPoint;
+        isPanningRef.current = true;
+      }
+    };
+
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
+    gl.domElement.addEventListener("click", handleMouseClick);
 
     return () => {
-      gl.domElement.removeEventListener("click", handleClick);
-      document.removeEventListener(
-        "pointerlockchange",
-        handlePointerLockChange,
-      );
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keyup", handleKeyUp);
-      controls.dispose();
+      gl.domElement.removeEventListener("click", handleMouseClick);
     };
   }, [camera, gl]);
 
   useFrame((state, delta) => {
-    if (!controlsRef.current || document.pointerLockElement !== gl.domElement)
-      return;
-
     const moveSpeed = 5;
     const acceleration = 15;
     const deceleration = 8;
@@ -97,9 +102,29 @@ const CustomPointerLockControls = () => {
     const keys = keysRef.current;
     const velocity = velocityRef.current;
 
+    // Handle gentle panning to target
+    if (isPanningRef.current && targetLookAtRef.current) {
+      const currentLookAt = new Vector3();
+      camera.getWorldDirection(currentLookAt);
+      currentLookAt.multiplyScalar(10).add(camera.position);
+      
+      // Smoothly interpolate to target
+      const panSpeed = 2.0; // Adjust for faster/slower panning
+      const lerpFactor = Math.min(panSpeed * delta, 1);
+      
+      currentLookAt.lerp(targetLookAtRef.current, lerpFactor);
+      camera.lookAt(currentLookAt);
+      
+      // Check if we're close enough to target
+      if (currentLookAt.distanceTo(targetLookAtRef.current) < 0.1) {
+        isPanningRef.current = false;
+        targetLookAtRef.current = null;
+      }
+    }
+
     const desiredVelocity = new Vector3(0, 0, 0);
 
-    // Get camera direction vectors
+    // Get camera direction vectors based on current camera rotation
     const cameraDirection = new Vector3();
     camera.getWorldDirection(cameraDirection);
 

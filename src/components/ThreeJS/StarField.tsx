@@ -7,8 +7,7 @@ const StarField = ({ matrix }: { matrix: StarMatrix }) => {
       {matrix.objects.map((starObj, index) => (
         <StarModel
           key={index}
-          position={starObj.position}
-          scale={starObj.scale}
+          {...starObj}
           index={index}
         />
       ))}
