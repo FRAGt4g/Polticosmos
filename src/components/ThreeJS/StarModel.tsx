@@ -2,19 +2,18 @@ import { useGLTF } from "@react-three/drei";
 import { useRef } from "react";
 import type { Group } from "three";
 import type { StarObject } from "~/lib/types";
-import { createDummyBillInfoSeeded } from "~/lib/utils";
 import { useCosmosContext } from "../providers/cosmos-provider";
 import { usePreferences } from "../providers/preferences-provider";
 
 const StarModel = ({ position, scale, billId }: StarObject) => {
-  const { setSelectedBill } = useCosmosContext();
+  const { selectBill } = useCosmosContext();
   const { scene } = useGLTF("/models/Star.glb");
   const { shouldShowTitle, setShouldShowTitle } = usePreferences();
   const meshRef = useRef<Group>(null);
 
   const handleClick = () => {
     console.log(`Star clicked! Bill ID: ${billId}`);
-    setSelectedBill(createDummyBillInfoSeeded(Number(billId)));
+    selectBill(billId);
     if (shouldShowTitle) {
       setShouldShowTitle(false);
     }

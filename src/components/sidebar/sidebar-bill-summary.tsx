@@ -72,7 +72,11 @@ export const BillSidebarSummary = ({ bill }: { bill: Bill }) => {
         <HStack className="w-full px-2" xSpacing="between" ySpacing="middle">
           <h1 className="text-2xl font-bold">{bill.title}</h1>
 
-          <StatusChip status={bill.states[bill.states.length - 1]!} />
+          {bill.states.length > 0 ? (
+            <StatusChip status={bill.states[bill.states.length - 1]!} />
+          ) : (
+            <StatusChip status="introduced" />
+          )}
         </HStack>
 
         <div className="bg-muted/20 h-px w-full" />
@@ -92,14 +96,18 @@ export const BillSidebarSummary = ({ bill }: { bill: Bill }) => {
           </h2>
         </HStack>
         <ScrollArea gap={1}>
-          {bill.states.map((status, index) => (
-            <HStack key={index} xSpacing="between" ySpacing="middle" gap={1}>
-              <StatusChip status={status} />
-              {index !== bill.states.length - 1 && (
-                <ArrowRight className="text-muted-foreground h-4 w-4" />
-              )}
-            </HStack>
-          ))}
+          {bill.states.length > 0 ? (
+            bill.states.map((status, index) => (
+              <HStack key={index} xSpacing="between" ySpacing="middle" gap={1}>
+                <StatusChip status={status} />
+                {index !== bill.states.length - 1 && (
+                  <ArrowRight className="text-muted-foreground h-4 w-4" />
+                )}
+              </HStack>
+            ))
+          ) : (
+            <StatusChip status="introduced" />
+          )}
         </ScrollArea>
       </VStack>
 

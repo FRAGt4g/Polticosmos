@@ -1,7 +1,7 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
-import { getBill } from "~/app/api/safe-fetches";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { getAllBills } from "~/app/api/safeFetches";
 import { type Bill } from "~/lib/types";
 
 interface CosmosContextType {
@@ -9,7 +9,7 @@ interface CosmosContextType {
   setSelectedBill: (bill: Bill | null) => void;
   loadedBills: Record<string, Bill>;
   setLoadedBills: (bills: Record<string, Bill>) => void;
-  selectBill: (billId: string) => Promise<void>;
+  selectBill: (billId: string) => void;
   deselectBill: () => void;
 }
 
@@ -26,25 +26,34 @@ export function useCosmosContext() {
 export function CosmosProvider({ children }: { children: React.ReactNode }) {
   const [loadedBills, setLoadedBills] = useState<Record<string, Bill>>({});
   const [selectedBill, setSelectedBill] = useState<Bill | null>(null);
+  const mounted = useRef(false);
 
-  async function selectBill(billId: string) {
-    if (loadedBills[billId]) {
-      setSelectedBill(loadedBills[billId]);
-      return;
+  useEffect(() => {
+    async function getBillsTest() {
+      const bills = await getAllBills();
+      console.log(`Loaded bills`, bills);
+      setLoadedBills(
+        bills.reduce(
+          (acc, bill) => {
+            acc[bill.uid] = bill;
+            return acc;
+          },
+          {} as Record<string, Bill>,
+        ),
+      );
+      mounted.current = true;
     }
 
-    const bill = await getBill(billId);
-    if (bill) {
-      setLoadedBills((prev) => ({ ...prev, [billId]: bill }));
-      setSelectedBill(bill);
-    } else {
-      console.error(`Bill ${billId} not found`);
-      setSelectedBill(null);
-    }
+    void getBillsTest();
+  }, []);
+
+  function selectBill(billId: string) {
+    const bill = loadedBills[billId] ?? null;
+    console.log(`Selecting bill ${billId}`, bill);
+    setSelectedBill(bill);
   }
 
   function deselectBill() {
-    console.log("Deselecting bill");
     setSelectedBill(null);
   }
 
@@ -58,6 +67,8 @@ export function CosmosProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <CosmosContext.Provider value={values}>{children}</CosmosContext.Provider>
+    <CosmosContext.Provider value={values}>
+      {mounted.current ? children : <div>Loading...</div>}
+    </CosmosContext.Provider>
   );
 }

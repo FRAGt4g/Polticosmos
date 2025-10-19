@@ -9,12 +9,12 @@ import type { StarMatrix } from "~/lib/types";
 const ThreeJSScene = () => {
   const starMatrix: StarMatrix = {
     objects: [
-      { position: [0, 0, 0], scale: 0.1, billId: "1" },
-      { position: [3, 1, -2], scale: 0.8, billId: "2" },
-      { position: [-2, -1, 1], scale: 1.2, billId: "3" },
-      { position: [1, 2, -3], scale: 0.6, billId: "4" },
-      { position: [-3, 0, 2], scale: 0.9, billId: "5" },
-      { position: [2, -2, -1], scale: 1.1, billId: "6" },
+      { position: [0, 0, 0], scale: 0.1, billId: "119-hr-46" },
+      { position: [3, 1, -2], scale: 0.8, billId: "119-hr-42" },
+      { position: [-2, -1, 1], scale: 1.2, billId: "119-hr-37" },
+      { position: [1, 2, -3], scale: 0.6, billId: "119-hr-41" },
+      { position: [-3, 0, 2], scale: 0.9, billId: "119-hr-72" },
+      { position: [2, -2, -1], scale: 1.1, billId: "119-hr-67" },
     ],
   };
 
