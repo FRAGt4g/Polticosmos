@@ -1,3 +1,5 @@
+import { useCosmosContext } from "~/components/providers/cosmos-provider";
+
 "use"
 
 import type { StarMatrix } from "~/lib/types";
@@ -10,16 +12,22 @@ const StarField = () => {
     useEffect(() => {
       GetStarMatrix().then(setMatrix);
     }, [])
+
+  const {loadedBills, lawOnly} = useCosmosContext();
   
   return matrix ? (
     <>
-      {matrix.objects.map((starObj, index) => (
-        <StarModel
-          key={index}
-          {...starObj}
-          index={index}
-        />
-      ))}
+      {matrix.objects.map((starObj, index) => {
+        const law = loadedBills[starObj.billId]?.states.includes('law');
+        return (!lawOnly || law ?
+          <StarModel
+            key={index}
+            {...starObj}
+            scale={lawOnly && law ? starObj.scale * 10 : starObj.scale}
+            index={index}
+          /> : <></>
+        )
+      })}
     </>
   ) : <></>;
 };

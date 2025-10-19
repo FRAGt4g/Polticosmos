@@ -1,5 +1,3 @@
-import type { ColorInstance } from "color";
-
 export type BillReference = string;
 export type RepReference = string;
 export type VoteReference = string;
@@ -39,6 +37,14 @@ export type Bill = {
   house_vote: VoteReference;
   senate_vote: VoteReference;
 };
+
+export type ExtraBillInformation = {
+  category: string;
+  summary: string;
+  tags: Tag[];
+};
+
+export type Tag = string;
 
 export type ConcatenatedBillStates = string;
 

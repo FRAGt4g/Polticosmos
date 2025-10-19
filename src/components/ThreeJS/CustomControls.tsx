@@ -1,9 +1,16 @@
-import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
-import { Raycaster, Vector2, Vector3 } from "three";
+import {
+  Canvas,
+  type CanvasProps,
+  useFrame,
+  useThree,
+} from "@react-three/fiber";
+import { type RefObject, useEffect, useRef } from "react";
+import { Raycaster, type Scene, Vector2, Vector3 } from "three";
 import { useCosmosContext } from "../providers/cosmos-provider";
 
-const CustomPointerLockControls = () => {
+const CustomPointerLockControls = ({
+   sceneRef
+}: {sceneRef: RefObject<Scene|undefined>}) => {
   const { camera, gl } = useThree();
   const keysRef = useRef({
     w: false,
@@ -11,7 +18,7 @@ const CustomPointerLockControls = () => {
     s: false,
     d: false,
   });
-  const { paused } = useCosmosContext();
+  const { paused, selectBill, lawOnly } = useCosmosContext();
   const velocityRef = useRef(new Vector3(0, 0, 0));
   const targetLookAtRef = useRef<Vector3 | null>(null);
   const isPanningRef = useRef(false);
@@ -62,6 +69,17 @@ const CustomPointerLockControls = () => {
         const raycaster = new Raycaster();
         raycaster.setFromCamera(mouse, camera);
 
+        if (sceneRef.current) {
+          const intersects = raycaster.intersectObjects(sceneRef.current.children);
+          if (intersects.length > 0) {
+            const intersect = intersects[0]!;
+            if (intersect.distance < (lawOnly ? 70 : 40)) {
+              const billId = intersect.object.userData
+              if (billId.billId) selectBill(billId.billId);
+            }
+          }
+        }
+
         // Calculate point in 3D space at a fixed distance
         const distance = 10; // Distance from camera to look at point
         const lookAtPoint = new Vector3();
@@ -96,7 +114,7 @@ const CustomPointerLockControls = () => {
     const keys = keysRef.current;
     const velocity = velocityRef.current;
 
-    
+
    
 
     const desiredVelocity = new Vector3(0, 0, 0);
@@ -132,14 +150,14 @@ const CustomPointerLockControls = () => {
         const currentLookAt = new Vector3();
         camera.getWorldDirection(currentLookAt);
         currentLookAt.multiplyScalar(10).add(camera.position);
-        
+
         // Smoothly interpolate to target
         const panSpeed = 2.0; // Adjust for faster/slower panning
         const lerpFactor = Math.min(panSpeed * delta, 1);
-        
+
         currentLookAt.lerp(targetLookAtRef.current, lerpFactor);
         camera.lookAt(currentLookAt);
-        
+
         // Check if we're close enough to target
         if (currentLookAt.distanceTo(targetLookAtRef.current) < 0.1) {
           isPanningRef.current = false;

@@ -1,6 +1,6 @@
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type Group, Mesh, type MeshLambertMaterial, Scene } from "three";
 import type { StarObject } from "~/lib/types";
 import { useCosmosContext } from "../providers/cosmos-provider";
@@ -58,7 +58,10 @@ const StarModel = ({
   };
 
   const [randomRotation, _] = useState<[number, number, number]>([Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI]);
-    
+  useEffect(() => {
+    meshRef.current?.scale.set(scale, scale, scale);
+  }, [scale]);
+
   return (
     <>
       <primitive
