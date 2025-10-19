@@ -93,7 +93,7 @@ const SearchBar = ({ maxCount = 5 }: { maxCount?: number }) => {
               }
               if (e.key === "Enter" && matchingBills.length > 0) {
                 setPaused(false);
-                selectBill(matchingBills[displacement]!.uid);
+                selectBill(matchingBills[displacement].uid);
                 setSearch("");
               }
             }}

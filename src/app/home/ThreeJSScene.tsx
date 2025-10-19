@@ -6,7 +6,7 @@ import { Suspense, useRef, useMemo, useLayoutEffect } from "react";
 import CustomPointerLockControls from "~/components/ThreeJS/CustomControls";
 import StarField from "~/components/ThreeJS/StarField";
 import * as THREE from "three";
-import { Scene } from "three";
+import { type Scene } from "three";
 
 // --- DATA -------------------------------------------------------------
 

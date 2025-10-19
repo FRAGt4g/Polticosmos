@@ -72,10 +72,10 @@ const CustomPointerLockControls = ({
         if (sceneRef.current) {
           const intersects = raycaster.intersectObjects(sceneRef.current.children);
           if (intersects.length > 0) {
-            const intersect = intersects[0]!;
+            const intersect = intersects[0];
             if (intersect.distance < (lawOnly ? 70 : 40)) {
               const billId = intersect.object.userData
-              if (billId.billId) selectBill(billId.billId);
+              if (billId.billId) selectBill(billId.billId as string);
             }
           }
         }

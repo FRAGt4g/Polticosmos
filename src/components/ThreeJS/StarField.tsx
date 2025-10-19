@@ -3,12 +3,12 @@ import { useCosmosContext } from "~/components/providers/cosmos-provider";
 import type { StarMatrix } from "~/lib/types";
 import StarModel from "./StarModel";
 import { useEffect, useState } from "react";
-import { GetStarMatrix } from "data-processing/starMatrix";
+import { GetStarMatrix } from "~/components/ThreeJS/starMatrix";
 
 const StarField = () => {
-    let [matrix, setMatrix] = useState<StarMatrix|undefined>(undefined);
+    const [matrix, setMatrix] = useState<StarMatrix|undefined>(undefined);
     useEffect(() => {
-      GetStarMatrix().then(setMatrix);
+      void GetStarMatrix().then(setMatrix);
     }, [])
 
   const {loadedBills, lawOnly} = useCosmosContext();

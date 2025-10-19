@@ -116,9 +116,9 @@ export function PreferencesProvider(props: { children: React.ReactNode }) {
       setSidebarLocation(storedSidebarLocation);
     }
 
-    const storedShouldShowTitle = localStorage?.getItem(
+    const storedShouldShowTitle = (localStorage?.getItem(
       getPageSpecificKey(DEFAULT_PREFERENCES.shouldShowTitle.key),
-    ) as boolean | null;
+    ) === 'true');
     if (storedShouldShowTitle !== null) {
       setShouldShowTitle(storedShouldShowTitle);
     }

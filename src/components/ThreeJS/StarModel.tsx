@@ -1,25 +1,17 @@
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
-import { type Group, Mesh, type MeshLambertMaterial, Scene } from "three";
+import {
+  type Group,
+  Mesh,
+  type MeshLambertMaterial,
+  type Object3D,
+  Scene,
+} from "three";
 import type { StarObject } from "~/lib/types";
 import { useCosmosContext } from "../providers/cosmos-provider";
 import NameOverlay from "./NameOverlay";
 import { usePreferences } from "../providers/preferences-provider";
-
-function cloneWithUniqueMaterials(scene: any) {
-    const clone = scene.clone(true);
-  
-    clone.traverse((obj: any) => {
-      if (obj.isMesh) {
-        // Duplicate the material so it’s not shared
-        obj.material = obj.material.clone();
-      }
-    });
-  
-    return clone;
-  }
-  
 
 const StarModel = ({
   position,
@@ -39,27 +31,24 @@ const StarModel = ({
     
       // Determine which subdivision
       const ind = Math.floor(rep_perc * 4); 
-  const { scene } = useGLTF(models[Math.min(ind, 3)]!);
+  const { scene } = useGLTF(models[Math.min(ind, 3)]);
   const { selectBill } = useCosmosContext();
   const meshRef = useRef<Group>(null);
 
-  const handleClick = () => {
-    selectBill(starProps.billId);
-  };
-
-  const clonedScene = cloneWithUniqueMaterials(scene);
+  const clonedScene = scene.clone();
 
   // Create the full star object
   const starObject: StarObject = {
     position,
     scale,
     rep_perc,
+    billId,
     name,
     ...starProps,
   };
 
   const [randomRotation, _] = useState<[number, number, number]>([Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI]);
-  clonedScene.traverse((c: any) => {
+  clonedScene.traverse((c: Object3D) => {
     if (c instanceof Mesh) {
       c.userData = { billId };
     }
@@ -77,7 +66,6 @@ const StarModel = ({
         position={position}
         rotation={randomRotation}
         scale={scale}
-        onClick={handleClick}
       />
       <NameOverlay
         star={starObject}
