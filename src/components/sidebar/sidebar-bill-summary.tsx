@@ -103,7 +103,7 @@ export const BillSidebarSummary = ({ bill }: { bill: Bill }) => {
   const mostRecentState = bill.states[bill.states.length - 1];
   console.log(`Most recent state`, mostRecentState, bill.states);
   const futureStates = (
-    FutureBillStates[mostRecentState!] as (_: Bill) => BillState[]
+    FutureBillStates[mostRecentState] as (_: Bill) => BillState[]
   )(bill) as unknown as BillState[];
   console.log(`Future states`, futureStates);
 
@@ -126,7 +126,7 @@ export const BillSidebarSummary = ({ bill }: { bill: Bill }) => {
               (bill.uid.split("-")[2] ?? "")}
           </h1>
 
-          <LargeStatusChip status={bill.states[bill.states.length - 1]!} />
+          <LargeStatusChip status={bill.states[bill.states.length - 1]} />
         </HStack>
         <h2 className="text-muted-foreground bg-red w-full px-3 text-lg font-medium">
           {bill.title}
@@ -152,7 +152,7 @@ export const BillSidebarSummary = ({ bill }: { bill: Bill }) => {
 
         <HStack className="w-full px-3">
           <ScrollArea gap={1}>
-            {loadedCategories[bill.uid]!.tags.map((tag, index) => (
+            {loadedCategories[bill.uid].tags.map((tag, index) => (
               <TagChip key={index} tag={tag} />
             ))}
           </ScrollArea>
@@ -187,7 +187,7 @@ export const BillSidebarSummary = ({ bill }: { bill: Bill }) => {
               transition={{ duration: 0.2, ease: "easeInOut" }}
             >
               <p className="text-muted/70 text-sm">
-                {loadedCategories[bill.uid]!.summary}
+                {loadedCategories[bill.uid].summary}
               </p>
             </motion.div>
           )}

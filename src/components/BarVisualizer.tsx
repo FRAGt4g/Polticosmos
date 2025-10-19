@@ -28,8 +28,8 @@ export const YayNayBarVisualizer = ({
     return <div>Vote not found</div>;
   }
 
-  const yeas = bar.yeas.map((yea) => loadedReps[yea]!);
-  const nays = bar.nays.map((nay) => loadedReps[nay]!);
+  const yeas = bar.yeas.map((yea) => loadedReps[yea]);
+  const nays = bar.nays.map((nay) => loadedReps[nay]);
 
   const grandTotal = yeas.length + nays.length;
 
@@ -61,7 +61,7 @@ export const YayNayBarVisualizer = ({
                 )}
                 style={{
                   width: `${
-                    (bar.yeas.filter((yea) => loadedReps[yea]!.party === "R")
+                    (bar.yeas.filter((yea) => loadedReps[yea].party === "R")
                       .length /
                       bar.yea_count) *
                     100
@@ -73,7 +73,7 @@ export const YayNayBarVisualizer = ({
               <p>
                 Republican:{" "}
                 {
-                  bar.yeas.filter((yea) => loadedReps[yea]!.party === "R")
+                  bar.yeas.filter((yea) => loadedReps[yea].party === "R")
                     .length
                 }{" "}
                 / {bar.yea_count}
@@ -90,7 +90,7 @@ export const YayNayBarVisualizer = ({
                 )}
                 style={{
                   width: `${
-                    (bar.yeas.filter((yea) => loadedReps[yea]!.party === "I")
+                    (bar.yeas.filter((yea) => loadedReps[yea].party === "I")
                       .length /
                       bar.yea_count) *
                     100
@@ -102,7 +102,7 @@ export const YayNayBarVisualizer = ({
               <p>
                 Independent:{" "}
                 {
-                  bar.yeas.filter((yea) => loadedReps[yea]!.party === "I")
+                  bar.yeas.filter((yea) => loadedReps[yea].party === "I")
                     .length
                 }{" "}
                 / {bar.yea_count}
@@ -119,7 +119,7 @@ export const YayNayBarVisualizer = ({
                 )}
                 style={{
                   width: `${
-                    (bar.yeas.filter((yea) => loadedReps[yea]!.party === "D")
+                    (bar.yeas.filter((yea) => loadedReps[yea].party === "D")
                       .length /
                       bar.yea_count) *
                     100
@@ -131,7 +131,7 @@ export const YayNayBarVisualizer = ({
               <p>
                 Democrat:{" "}
                 {
-                  bar.yeas.filter((yea) => loadedReps[yea]!.party === "D")
+                  bar.yeas.filter((yea) => loadedReps[yea].party === "D")
                     .length
                 }{" "}
                 / {grandTotal}
@@ -167,7 +167,7 @@ export const YayNayBarVisualizer = ({
                 )}
                 style={{
                   width: `${
-                    (bar.nays.filter((nay) => loadedReps[nay]!.party === "R")
+                    (bar.nays.filter((nay) => loadedReps[nay].party === "R")
                       .length /
                       bar.nay_count) *
                     100
@@ -179,7 +179,7 @@ export const YayNayBarVisualizer = ({
               <p>
                 Republican:{" "}
                 {
-                  bar.nays.filter((nay) => loadedReps[nay]!.party === "R")
+                  bar.nays.filter((nay) => loadedReps[nay].party === "R")
                     .length
                 }{" "}
                 / {bar.nay_count}
@@ -196,7 +196,7 @@ export const YayNayBarVisualizer = ({
                 )}
                 style={{
                   width: `${
-                    (bar.nays.filter((nay) => loadedReps[nay]!.party === "I")
+                    (bar.nays.filter((nay) => loadedReps[nay].party === "I")
                       .length /
                       bar.nay_count) *
                     100
@@ -208,7 +208,7 @@ export const YayNayBarVisualizer = ({
               <p>
                 Independent:{" "}
                 {
-                  bar.nays.filter((nay) => loadedReps[nay]!.party === "I")
+                  bar.nays.filter((nay) => loadedReps[nay].party === "I")
                     .length
                 }{" "}
                 / {bar.nay_count}
@@ -226,7 +226,7 @@ export const YayNayBarVisualizer = ({
                 )}
                 style={{
                   width: `${
-                    (bar.nays.filter((nay) => loadedReps[nay]!.party === "D")
+                    (bar.nays.filter((nay) => loadedReps[nay].party === "D")
                       .length /
                       bar.nay_count) *
                     100
@@ -238,7 +238,7 @@ export const YayNayBarVisualizer = ({
               <p>
                 Democrat:{" "}
                 {
-                  bar.nays.filter((nay) => loadedReps[nay]!.party === "D")
+                  bar.nays.filter((nay) => loadedReps[nay].party === "D")
                     .length
                 }{" "}
                 / {bar.nay_count}
@@ -265,7 +265,7 @@ export const SingleBarVisualizer = ({
     return <div>Reps not found</div>;
   }
 
-  const cosponsorsReps = cosponsors.map((cosponsor) => loadedReps[cosponsor]!);
+  const cosponsorsReps = cosponsors.map((cosponsor) => loadedReps[cosponsor]);
 
   const republicanCount = cosponsorsReps.filter(
     (cosponsor) => cosponsor.party === "R",
