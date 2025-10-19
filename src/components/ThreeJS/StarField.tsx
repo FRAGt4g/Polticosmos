@@ -1,7 +1,5 @@
 import { useCosmosContext } from "~/components/providers/cosmos-provider";
 
-"use"
-
 import type { StarMatrix } from "~/lib/types";
 import StarModel from "./StarModel";
 import { useEffect, useState } from "react";

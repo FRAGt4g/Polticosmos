@@ -26,6 +26,7 @@ const StarModel = ({
   scale,
   rep_perc,
   name,
+  billId,
   index,
   ...starProps
 }: StarObject & { index: number }) => {
@@ -58,6 +59,12 @@ const StarModel = ({
   };
 
   const [randomRotation, _] = useState<[number, number, number]>([Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI]);
+  clonedScene.traverse((c: any) => {
+    if (c instanceof Mesh) {
+      c.userData = { billId };
+    }
+  });
+
   useEffect(() => {
     meshRef.current?.scale.set(scale, scale, scale);
   }, [scale]);

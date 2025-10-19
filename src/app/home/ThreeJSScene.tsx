@@ -6,6 +6,7 @@ import { Suspense, useRef, useMemo, useLayoutEffect } from "react";
 import CustomPointerLockControls from "~/components/ThreeJS/CustomControls";
 import StarField from "~/components/ThreeJS/StarField";
 import * as THREE from "three";
+import { Scene } from "three";
 
 // --- DATA -------------------------------------------------------------
 
@@ -137,9 +138,11 @@ const ThreeJSScene = () => {
     return labels.map((_, i) => palette[i % palette.length]);
   }, []);
 
+  const sceneRef = useRef<Scene|undefined>(undefined);
+
   return (
     <div className="h-screen w-full">
-      <Canvas camera={{ position: [0, 0, 500], fov: 60 }} style={{ background: "#000011" }}>
+      <Canvas onCreated={({scene}) => sceneRef.current = scene} camera={{ position: [0, 0, 500], fov: 60 }} style={{ background: "#000011" }}>
         <Suspense fallback={null}>
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
@@ -160,7 +163,7 @@ const ThreeJSScene = () => {
             />
           ))}
 
-          <CustomPointerLockControls />
+          <CustomPointerLockControls sceneRef={sceneRef} />
         </Suspense>
       </Canvas>
     </div>
