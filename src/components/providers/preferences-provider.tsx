@@ -19,6 +19,7 @@ export type PreferncesConfig = {
     isDarkMode: () => boolean;
   };
   sidebarLocation: PreferncesValues<PREFERENCE_SidebarChoice>;
+  shouldShowTitle: PreferncesValues<boolean>;
 };
 
 // Get the current page path to create page-specific storage keys
@@ -44,6 +45,10 @@ export const DEFAULT_PREFERENCES: PreferncesConfig = {
   sidebarLocation: {
     value: "left",
     key: "sidebar-location", // This will be made page-specific when used
+  },
+  shouldShowTitle: {
+    value: true,
+    key: "title-visibility", // This will be made page-specific when used
   },
 };
 
@@ -81,10 +86,13 @@ const PreferencesProviderContext = createContext<PreferencesContext>({
   isDarkMode: () => false,
   sidebarLocation: DEFAULT_PREFERENCES.sidebarLocation.value,
   setSidebarLocation: () => null,
+  shouldShowTitle: true,
+  setShouldShowTitle: () => null,
 });
 
 export function PreferencesProvider(props: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
+  const [shouldShowTitle, setShouldShowTitle] = useState(true);
   const [theme, setTheme] = useState<PREFERENCE_Theme>(
     DEFAULT_PREFERENCES.theme.value,
   );
@@ -106,6 +114,13 @@ export function PreferencesProvider(props: { children: React.ReactNode }) {
     ) as PREFERENCE_SidebarChoice | null;
     if (storedSidebarLocation) {
       setSidebarLocation(storedSidebarLocation);
+    }
+
+    const storedShouldShowTitle = localStorage?.getItem(
+      getPageSpecificKey(DEFAULT_PREFERENCES.shouldShowTitle.key),
+    ) as boolean | null;
+    if (storedShouldShowTitle !== null) {
+      setShouldShowTitle(storedShouldShowTitle);
     }
 
     setIsMounted(true);
@@ -149,6 +164,14 @@ export function PreferencesProvider(props: { children: React.ReactNode }) {
         sidebarLocation,
       );
       setSidebarLocation(sidebarLocation);
+    },
+    shouldShowTitle,
+    setShouldShowTitle: (shouldShowTitle: boolean) => {
+      localStorage.setItem(
+        getPageSpecificKey(DEFAULT_PREFERENCES.shouldShowTitle.key),
+        shouldShowTitle.toString(),
+      );
+      setShouldShowTitle(shouldShowTitle);
     },
   };
 

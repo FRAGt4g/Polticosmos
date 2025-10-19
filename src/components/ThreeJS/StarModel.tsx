@@ -4,6 +4,7 @@ import { useRef } from "react";
 import type { Group } from "three";
 import type { StarObject } from "~/lib/types";
 import NameOverlay from "./NameOverlay";
+import { usePreferences } from "../providers/preferences-provider";
 
 const StarModel = ({
   position,
@@ -13,6 +14,7 @@ const StarModel = ({
   ...starProps
 }: StarObject & { index: number }) => {
   const { scene } = useGLTF("/models/Star.glb");
+  const { shouldShowTitle, setShouldShowTitle } = usePreferences();
   const meshRef = useRef<Group>(null);
 
   const handleClick = () => {

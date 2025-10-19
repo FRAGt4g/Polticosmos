@@ -12,32 +12,38 @@ const ThreeJSScene = () => {
       { 
         position: [0, 0, 0], 
         scale: 0.5, 
-        name: "Polaris"
+        name: "Polaris",
+        billId: "1"
       },
       { 
         position: [3, 1, -2], 
         scale: 0.8, 
-        name: "Sirius"
+        name: "Sirius",
+        billId: "1"
       },
       { 
         position: [-2, -1, 1], 
         scale: 1.2, 
-        name: "Betelgeuse"
+        name: "Betelgeuse",
+        billId: "1"
       },
       { 
         position: [1, 2, -3], 
         scale: 0.6, 
-        name: "Vega"
+        name: "Vega",
+        billId: "2"
       },
       { 
         position: [-3, 0, 2], 
         scale: 0.9, 
-        name: "Rigel"
+        name: "Rigel",
+        billId: "3"
       },
       { 
         position: [2, -2, -1], 
         scale: 1.1, 
-        name: "Antares"
+        name: "Antares",
+        billId: "4"
       },
     ],
   };

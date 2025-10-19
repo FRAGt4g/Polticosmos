@@ -22,20 +22,20 @@ export default function StarryNightLayout({
 }
 
 const Inner = ({ children }: { children: React.ReactNode }) => {
-  const { selectedStar: bill, setSelectedStar } = useCosmosContext();
+  const { selectedBill, setSelectedBill } = useCosmosContext();
 
   return (
     <SidebarProvider
-      open={bill !== null}
+      open={selectedBill !== null}
       setOpen={(open) => {
-        setSelectedStar(open ? bill : null);
+        setSelectedBill(open ? selectedBill : null);
       }}
     >
       <SidebarBody
-        className="border-background/10 bg-background/5 text-background flex h-screen flex-col border-2 shadow-md backdrop-blur-md"
+        className="text-background flex h-screen flex-col border-2 border-white/10 bg-white/10 shadow-md shadow-black backdrop-blur-2xl"
         side={"left"}
       >
-        {bill && <BillSidebarSummary bill={bill} />}
+        {selectedBill && <BillSidebarSummary bill={selectedBill} />}
       </SidebarBody>
       {children}
     </SidebarProvider>

@@ -1,4 +1,7 @@
 from google import genai
+import psycopg2
+import requests
+import re
 
 client = genai.Client()
 
@@ -67,13 +70,38 @@ def save_LLM_response_to_json(response_text, filename="bill_summary.json"):
     with open(output_dir + filename, "w") as f:
         json.dump(output_data, f, indent=4)
 
-def process_bill(bill_text, tags, categories):
+def process_bill(bill_text, tags, categories, filename="bill_summary.json"):
     # Call the Gemmini API to get the bill summary, tags, and category
     response_text = call_gemini_api(bill_text, tags, categories)
 
     # If the result is valid, save the output to a JSON file
     if result:
-        save_LLM_response_to_json(response_text)
+        save_LLM_response_to_json(response_text, filename)
+
+# Scrape raw text from congress given a specific bill uid
+def get_bill_text(uid):
+    congress = uid.split("-")[0]
+    chamber = "house" if uid.split("-")[1] == "hr" else "senate"
+    number = uid.split("-")[2]
+    html = requests.get(f"https://www.congress.gov/bill/{congress}th-congress/{chamber}-bill/{number}/text/pcs?format=txt").text
+
+    return re.search('(?<=<pre id="billTextContainer">)((.|\n)*)(?=</pre>)').group(1)
 
 if __name__ == '__main__':
-    process_bill("Some bill text...", TAGS, CATEGORIES)
+    # Connect to the bill database
+    conn = psycopg2.connect(
+        dbname="postgres",
+        user="postgres",
+        password="dev",
+        host="fe80::14b2:c1e1:3c47:8748%en0"
+    )
+
+    # Fetch every row in the database (where each one represents a different bill)
+    cursor = conn.cursor()
+    cursor.execute("SELECT uid FROM bills")
+    bill_uids = cursor.fetchall()
+
+    for uid in bill_uids:
+        bill_text = get_bill_text(uid)
+        filename = f"{uid}.json"
+        process_bill(bill_text, TAGS, CATEGORIES, filename)
