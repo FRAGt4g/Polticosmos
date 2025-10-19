@@ -31,10 +31,10 @@ const StarModel = ({
   ...starProps
 }: StarObject & { index: number }) => {
     const models = [
-        "/models/Star1.glb", // lowest 0–0.25
+        "/models/Star2.glb", // lowest 0–0.25
         "/models/Star1.glb", // 0.25–0.5
         "/models/Star4.glb", // 0.5–0.75
-        "/models/Star4.glb", // 0.75–1
+        "/models/Star3.glb", // 0.75–1
       ];
     
       // Determine which subdivision
