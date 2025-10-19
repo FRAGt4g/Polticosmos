@@ -1,12 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type {
-  Bill,
-  Rep,
-  RepReference,
-  VoteReference,
-  VoteResolution,
-} from "./types";
+import type { Bill } from "./types";
 import { BillState, BillTypes } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
@@ -25,24 +19,28 @@ function createSeededRandom(seed: number) {
   };
 }
 
-export function getRepFromReference(reference: RepReference): Rep {
-  return {
-    uid: reference,
-    name: "Rep" + reference.substring(2, 15),
-    party: "R",
-    state: "NY",
-  };
+export function parseBillStates(states: string): BillState[] {
+  return (
+    states
+      .substring(1, states.length - 1)
+      .split(",")
+      // .map((state) => HumanReadableBillStates[state.trim() as BillState])
+      .reverse()
+      .filter(
+        (state, index) => !(state === "introduced" && index !== 0),
+      ) as unknown as BillState[]
+  );
 }
 
-export function getVoteResolution(reference: VoteReference): VoteResolution {
-  return {
-    yeas: [],
-    nays: [],
-    yea_count: 0,
-    nay_count: 0,
-    date: new Date(),
-  };
+export function parseRepString(repName: string): string {
+  const names = repName
+    .substring(repName.indexOf("Rep. ") + 5, repName.indexOf("["))
+    .split(",")
+    .map((name) => name.trim());
+
+  return names[1] + " " + names[0];
 }
+
 export function formatBillStatus(status: BillState): string {
   return status
     .replaceAll("_", ": ")

@@ -14,6 +14,7 @@ export type Rep = {
 };
 
 export type VoteResolution = {
+  uid: string;
   yeas: RepReference[];
   nays: RepReference[];
   yea_count: number;
@@ -36,6 +37,68 @@ export type Bill = {
   house_vote: VoteReference;
   senate_vote: VoteReference;
 };
+
+export type ConcatenatedBillStates = string;
+
+export const FutureBillStates = {
+  introduced: (bill: Bill) =>
+    bill.type === "hr"
+      ? ["house", "senate", "president", "law"]
+      : ["senate", "house", "president", "law"],
+  house: (_: Bill) => ["senate", "president", "law"],
+  senate: (_: Bill) => ["house", "president", "law"],
+  conference: (bill: Bill) =>
+    bill.type === "hr"
+      ? [
+          "conference_house",
+          "conference_senate",
+          "conference_passed",
+          "president",
+          "law",
+        ]
+      : [
+          "conference_senate",
+          "conference_house",
+          "conference_passed",
+          "president",
+          "law",
+        ],
+  conference_house: (_: Bill) => [
+    "conference_senate",
+    "conference_passed",
+    "president",
+    "law",
+  ],
+  conference_senate: (_: Bill) => [
+    "conference_house",
+    "conference_passed",
+    "president",
+    "law",
+  ],
+  conference_passed: (_: Bill) => ["president", "law"],
+  president: (_: Bill) => ["law"],
+  veto: (_: Bill) => [],
+  veto_house: (_: Bill) => [],
+  veto_senate: (_: Bill) => [],
+  veto_overridden: (_: Bill) => [],
+  law: (_: Bill) => [],
+} as const satisfies Record<BillState, (_: Bill) => BillState[]>;
+
+export const HumanReadableBillStates = {
+  introduced: "Introduced",
+  house: "Passed House",
+  senate: "Passed Senate",
+  conference: "Conference",
+  conference_house: "Passed House",
+  conference_senate: "Passed Senate",
+  conference_passed: "Passed Conference",
+  president: "President",
+  veto: "Veto",
+  veto_house: "House Overridden",
+  veto_senate: "Senate Overridden",
+  veto_overridden: "Veto Overridden",
+  law: "Law",
+} as const satisfies Record<BillState, string>;
 
 export const BillState = [
   "introduced", // introduced in house or senate

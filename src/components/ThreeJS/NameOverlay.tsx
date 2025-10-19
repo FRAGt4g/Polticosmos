@@ -1,8 +1,9 @@
 import { Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useState } from "react";
-import { Vector3, Group } from "three";
+import { Vector3, type Group } from "three";
 import type { StarObject } from "~/lib/types";
+import { useCosmosContext } from "../providers/cosmos-provider";
 
 interface NameOverlayProps {
   star: StarObject;
@@ -11,17 +12,20 @@ interface NameOverlayProps {
   offset?: number;
 }
 
-const NameOverlay = ({ 
-  star, 
-  position, 
-  maxDistance = 5, 
-  offset = 0.5
+const NameOverlay = ({
+  star,
+  position,
+  maxDistance = 5,
+  offset = 0.5,
 }: NameOverlayProps) => {
   const { camera } = useThree();
+  const { paused } = useCosmosContext();
   const [isVisible, setIsVisible] = useState(false);
   const groupRef = useRef<Group>(null);
 
   useFrame(() => {
+    if (paused) return;
+
     // Calculate distance from camera to star
     const starPosition = new Vector3(...position);
     const distance = camera.position.distanceTo(starPosition);
@@ -32,7 +36,11 @@ const NameOverlay = ({
 
     // Position the overlay below the star if visible and ref is available
     if (shouldShow && groupRef.current) {
-      groupRef.current.position.set(position[0], position[1] - offset, position[2]);
+      groupRef.current.position.set(
+        position[0],
+        position[1] - offset,
+        position[2],
+      );
     }
   });
 
@@ -40,13 +48,7 @@ const NameOverlay = ({
   return (
     <group ref={groupRef}>
       {isVisible && (
-        <Html
-          center
-          transform
-          sprite
-          distanceFactor={1}
-          zIndexRange={[100, 0]}
-        >
+        <Html center transform sprite distanceFactor={1} zIndexRange={[100, 0]}>
           <div
             style={{
               background: "rgba(0, 0, 0, 0.8)",

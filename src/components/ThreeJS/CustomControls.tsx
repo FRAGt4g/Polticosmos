@@ -1,7 +1,7 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
-import { Vector3, Vector2, Raycaster } from "three";
-import * as THREE from "three";
+import { Raycaster, Vector2, Vector3 } from "three";
+import { useCosmosContext } from "../providers/cosmos-provider";
 
 const CustomPointerLockControls = () => {
   const { camera, gl } = useThree();
@@ -11,8 +11,8 @@ const CustomPointerLockControls = () => {
     s: false,
     d: false,
   });
+  const { paused } = useCosmosContext();
   const velocityRef = useRef(new Vector3(0, 0, 0));
-  const raycasterRef = useRef(new THREE.Raycaster());
   const targetLookAtRef = useRef<Vector3 | null>(null);
   const isPanningRef = useRef(false);
 
@@ -20,19 +20,15 @@ const CustomPointerLockControls = () => {
     const handleKeyDown = (event: KeyboardEvent) => {
       switch (event.code) {
         case "KeyW":
-          event.preventDefault();
           keysRef.current.w = true;
           break;
         case "KeyA":
-          event.preventDefault();
           keysRef.current.a = true;
           break;
         case "KeyS":
-          event.preventDefault();
           keysRef.current.s = true;
           break;
         case "KeyD":
-          event.preventDefault();
           keysRef.current.d = true;
           break;
       }
@@ -41,27 +37,22 @@ const CustomPointerLockControls = () => {
     const handleKeyUp = (event: KeyboardEvent) => {
       switch (event.code) {
         case "KeyW":
-          event.preventDefault();
           keysRef.current.w = false;
           break;
         case "KeyA":
-          event.preventDefault();
           keysRef.current.a = false;
           break;
         case "KeyS":
-          event.preventDefault();
           keysRef.current.s = false;
           break;
         case "KeyD":
-          event.preventDefault();
           keysRef.current.d = false;
           break;
       }
     };
 
     const handleMouseClick = (event: MouseEvent) => {
-      if (event.button === 0) { // Left mouse button
-        // Get mouse position in normalized device coordinates (-1 to +1)
+      if (event.button === 0) {
         const rect = gl.domElement.getBoundingClientRect();
         const mouse = new Vector2();
         mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
@@ -94,6 +85,9 @@ const CustomPointerLockControls = () => {
   }, [camera, gl]);
 
   useFrame((state, delta) => {
+    // console.log("paused", paused);
+    if (paused) return;
+
     const moveSpeed = 5;
     const acceleration = 15;
     const deceleration = 8;
@@ -107,14 +101,14 @@ const CustomPointerLockControls = () => {
       const currentLookAt = new Vector3();
       camera.getWorldDirection(currentLookAt);
       currentLookAt.multiplyScalar(10).add(camera.position);
-      
+
       // Smoothly interpolate to target
       const panSpeed = 2.0; // Adjust for faster/slower panning
       const lerpFactor = Math.min(panSpeed * delta, 1);
-      
+
       currentLookAt.lerp(targetLookAtRef.current, lerpFactor);
       camera.lookAt(currentLookAt);
-      
+
       // Check if we're close enough to target
       if (currentLookAt.distanceTo(targetLookAtRef.current) < 0.1) {
         isPanningRef.current = false;

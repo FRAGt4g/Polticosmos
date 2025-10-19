@@ -2,11 +2,43 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
+import { useEffect } from "react";
+import { useCosmosContext } from "./providers/cosmos-provider";
 import { useSidebar } from "./sidebar/sidebar-components";
+
+const knownBills = [
+  "119-hr-46",
+  "119-hr-42",
+  "119-hr-37",
+  "119-hr-41",
+  "119-hr-72",
+  "119-hr-67",
+  "119-hr-75",
+  "119-hr-61",
+  "119-hr-59",
+];
+
+const specialBillId = "119-hr-4";
 
 const Title = () => {
   const { open, sidebarWidth } = useSidebar();
+  const { selectBill } = useCosmosContext();
   const left = (window.innerWidth + (open ? sidebarWidth : 0)) / 2;
+
+  useEffect(() => {
+    function fakeClickStar(event: KeyboardEvent) {
+      if (event.key === "f") {
+        selectBill(specialBillId);
+      }
+      // if (event.key === "f") {
+      //   selectBill(getRandomElement(knownBills));
+      // }
+    }
+    document.addEventListener("keypress", fakeClickStar);
+    return () => {
+      document.removeEventListener("keypress", fakeClickStar);
+    };
+  }, []);
 
   return (
     <AnimatePresence>
@@ -36,7 +68,8 @@ const Title = () => {
             <Sparkles className="text-accent h-8 w-8" />
           </h1>
           <p className="text-muted-foreground text-sm md:text-base">
-            Click on any star to discover its secrets
+            Click on any star to discover its secrets or ⌘ + k to search for a
+            bill
           </p>
         </motion.div>
       )}

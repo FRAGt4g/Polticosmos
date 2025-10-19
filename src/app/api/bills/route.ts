@@ -22,7 +22,6 @@ export async function GET(request: NextRequest) {
   }
   query = query.slice(0, -4); // remove the last "AND"
 
-  console.log("Query: ", query);
   const client = await db.connect();
   const { rows } = (await client.query(query, values)) as { rows: Bill[] };
   client.release();

@@ -1,11 +1,12 @@
 import { type RepReference, type VoteReference } from "~/lib/types";
-import { cn, getRepFromReference, getVoteResolution } from "~/lib/utils";
+import { cn } from "~/lib/utils";
 import { HStack, VStack } from "./helpers/helperdivs";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "./imported/ShadCN/tooltip";
+import { useCosmosContext } from "./providers/cosmos-provider";
 
 const colors = {
   republican: "bg-gradient-to-l from-red-500 to-red-700",
@@ -20,9 +21,17 @@ export const YayNayBarVisualizer = ({
   reference: VoteReference;
   height?: number;
 }) => {
-  const bar = getVoteResolution(reference);
+  const { loadedReps, loadedVotes } = useCosmosContext();
+  const bar = loadedVotes[reference];
 
-  const grandTotal = bar.yea_count + bar.nay_count;
+  if (!bar) {
+    return <div>Vote not found</div>;
+  }
+
+  const yeas = bar.yeas.map((yea) => loadedReps[yea]!);
+  const nays = bar.nays.map((nay) => loadedReps[nay]!);
+
+  const grandTotal = yeas.length + nays.length;
 
   return (
     <HStack className="w-full rounded-full" gap={2}>
@@ -52,9 +61,8 @@ export const YayNayBarVisualizer = ({
                 )}
                 style={{
                   width: `${
-                    (bar.yeas.filter(
-                      (yea) => getRepFromReference(yea).party === "R",
-                    ).length /
+                    (bar.yeas.filter((yea) => loadedReps[yea]!.party === "R")
+                      .length /
                       bar.yea_count) *
                     100
                   }%`,
@@ -65,11 +73,10 @@ export const YayNayBarVisualizer = ({
               <p>
                 Republican:{" "}
                 {
-                  bar.yeas.filter(
-                    (yea) => getRepFromReference(yea).party === "R",
-                  ).length
+                  bar.yeas.filter((yea) => loadedReps[yea]!.party === "R")
+                    .length
                 }{" "}
-                / {grandTotal}
+                / {bar.yea_count}
               </p>
             </TooltipContent>
           </Tooltip>
@@ -83,9 +90,8 @@ export const YayNayBarVisualizer = ({
                 )}
                 style={{
                   width: `${
-                    (bar.yeas.filter(
-                      (yea) => getRepFromReference(yea).party === "I",
-                    ).length /
+                    (bar.yeas.filter((yea) => loadedReps[yea]!.party === "I")
+                      .length /
                       bar.yea_count) *
                     100
                   }%`,
@@ -96,11 +102,10 @@ export const YayNayBarVisualizer = ({
               <p>
                 Independent:{" "}
                 {
-                  bar.yeas.filter(
-                    (yea) => getRepFromReference(yea).party === "I",
-                  ).length
+                  bar.yeas.filter((yea) => loadedReps[yea]!.party === "I")
+                    .length
                 }{" "}
-                / {grandTotal}
+                / {bar.yea_count}
               </p>
             </TooltipContent>
           </Tooltip>
@@ -114,9 +119,8 @@ export const YayNayBarVisualizer = ({
                 )}
                 style={{
                   width: `${
-                    (bar.yeas.filter(
-                      (yea) => getRepFromReference(yea).party === "D",
-                    ).length /
+                    (bar.yeas.filter((yea) => loadedReps[yea]!.party === "D")
+                      .length /
                       bar.yea_count) *
                     100
                   }%`,
@@ -127,9 +131,8 @@ export const YayNayBarVisualizer = ({
               <p>
                 Democrat:{" "}
                 {
-                  bar.yeas.filter(
-                    (yea) => getRepFromReference(yea).party === "D",
-                  ).length
+                  bar.yeas.filter((yea) => loadedReps[yea]!.party === "D")
+                    .length
                 }{" "}
                 / {grandTotal}
               </p>
@@ -164,9 +167,8 @@ export const YayNayBarVisualizer = ({
                 )}
                 style={{
                   width: `${
-                    (bar.nays.filter(
-                      (nay) => getRepFromReference(nay).party === "R",
-                    ).length /
+                    (bar.nays.filter((nay) => loadedReps[nay]!.party === "R")
+                      .length /
                       bar.nay_count) *
                     100
                   }%`,
@@ -177,11 +179,10 @@ export const YayNayBarVisualizer = ({
               <p>
                 Republican:{" "}
                 {
-                  bar.nays.filter(
-                    (nay) => getRepFromReference(nay).party === "R",
-                  ).length
+                  bar.nays.filter((nay) => loadedReps[nay]!.party === "R")
+                    .length
                 }{" "}
-                / {grandTotal}
+                / {bar.nay_count}
               </p>
             </TooltipContent>
           </Tooltip>
@@ -195,9 +196,8 @@ export const YayNayBarVisualizer = ({
                 )}
                 style={{
                   width: `${
-                    (bar.nays.filter(
-                      (nay) => getRepFromReference(nay).party === "I",
-                    ).length /
+                    (bar.nays.filter((nay) => loadedReps[nay]!.party === "I")
+                      .length /
                       bar.nay_count) *
                     100
                   }%`,
@@ -208,11 +208,10 @@ export const YayNayBarVisualizer = ({
               <p>
                 Independent:{" "}
                 {
-                  bar.nays.filter(
-                    (nay) => getRepFromReference(nay).party === "I",
-                  ).length
+                  bar.nays.filter((nay) => loadedReps[nay]!.party === "I")
+                    .length
                 }{" "}
-                / {grandTotal}
+                / {bar.nay_count}
               </p>
             </TooltipContent>
           </Tooltip>
@@ -227,9 +226,8 @@ export const YayNayBarVisualizer = ({
                 )}
                 style={{
                   width: `${
-                    (bar.nays.filter(
-                      (nay) => getRepFromReference(nay).party === "D",
-                    ).length /
+                    (bar.nays.filter((nay) => loadedReps[nay]!.party === "D")
+                      .length /
                       bar.nay_count) *
                     100
                   }%`,
@@ -240,11 +238,10 @@ export const YayNayBarVisualizer = ({
               <p>
                 Democrat:{" "}
                 {
-                  bar.nays.filter(
-                    (nay) => getRepFromReference(nay).party === "D",
-                  ).length
+                  bar.nays.filter((nay) => loadedReps[nay]!.party === "D")
+                    .length
                 }{" "}
-                / {grandTotal}
+                / {bar.nay_count}
               </p>
             </TooltipContent>
           </Tooltip>
@@ -262,9 +259,33 @@ export const SingleBarVisualizer = ({
   height?: number;
 }) => {
   const grandTotal = cosponsors.length;
+  const { loadedReps } = useCosmosContext();
+
+  if (!loadedReps) {
+    return <div>Reps not found</div>;
+  }
+
+  const cosponsorsReps = cosponsors.map((cosponsor) => loadedReps[cosponsor]!);
+
+  const republicanCount = cosponsorsReps.filter(
+    (cosponsor) => cosponsor.party === "R",
+  ).length;
+  const independentCount = cosponsorsReps.filter(
+    (cosponsor) => cosponsor.party === "I",
+  ).length;
+  const democratCount = cosponsorsReps.filter(
+    (cosponsor) => cosponsor.party === "D",
+  ).length;
+
+  console.log(cosponsorsReps, republicanCount, independentCount, democratCount);
 
   return (
-    <HStack className="w-full rounded-full" gap={2}>
+    <HStack
+      className="w-full rounded-full"
+      xSpacing="between"
+      ySpacing="middle"
+      gap={2}
+    >
       <div
         className={cn(
           "flex w-full overflow-hidden rounded-full border border-black",
@@ -282,25 +303,13 @@ export const SingleBarVisualizer = ({
                 "flex items-center justify-center text-xs font-medium text-white transition-all hover:opacity-80",
               )}
               style={{
-                width: `${
-                  (cosponsors.filter(
-                    (cosponsor) => getRepFromReference(cosponsor).party === "R",
-                  ).length /
-                    grandTotal) *
-                  100
-                }%`,
+                width: `${(republicanCount / grandTotal) * 100}%`,
               }}
             />
           </TooltipTrigger>
           <TooltipContent>
             <p>
-              Republican:{" "}
-              {
-                cosponsors.filter(
-                  (cosponsor) => getRepFromReference(cosponsor).party === "R",
-                ).length
-              }{" "}
-              / {grandTotal}
+              Republican: {republicanCount} / {grandTotal}
             </p>
           </TooltipContent>
         </Tooltip>
@@ -313,25 +322,13 @@ export const SingleBarVisualizer = ({
                 "flex items-center justify-center text-xs font-medium text-white transition-all hover:opacity-80",
               )}
               style={{
-                width: `${
-                  (cosponsors.filter(
-                    (yea) => getRepFromReference(yea).party === "I",
-                  ).length /
-                    grandTotal) *
-                  100
-                }%`,
+                width: `${(independentCount / grandTotal) * 100}%`,
               }}
             />
           </TooltipTrigger>
           <TooltipContent>
             <p>
-              Independent:{" "}
-              {
-                cosponsors.filter(
-                  (cosponsor) => getRepFromReference(cosponsor).party === "I",
-                ).length
-              }{" "}
-              / {grandTotal}
+              Independent: {independentCount} / {grandTotal}
             </p>
           </TooltipContent>
         </Tooltip>
@@ -344,29 +341,20 @@ export const SingleBarVisualizer = ({
                 "flex items-center justify-center text-xs font-medium text-white transition-all hover:opacity-80",
               )}
               style={{
-                width: `${
-                  (cosponsors.filter(
-                    (yea) => getRepFromReference(yea).party === "D",
-                  ).length /
-                    grandTotal) *
-                  100
-                }%`,
+                width: `${(democratCount / grandTotal) * 100}%`,
               }}
             />
           </TooltipTrigger>
           <TooltipContent>
             <p>
-              Democrat:{" "}
-              {
-                cosponsors.filter(
-                  (cosponsor) => getRepFromReference(cosponsor).party === "D",
-                ).length
-              }{" "}
-              / {grandTotal}
+              Democrat: {democratCount} / {grandTotal}
             </p>
           </TooltipContent>
         </Tooltip>
       </div>
+      {/* <p className="text-muted-foreground text-xs whitespace-nowrap">
+        {grandTotal}
+      </p> */}
     </HStack>
   );
 };

@@ -1,10 +1,9 @@
 import { useGLTF } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import type { Group } from "three";
 import type { StarObject } from "~/lib/types";
+import { useCosmosContext } from "../providers/cosmos-provider";
 import NameOverlay from "./NameOverlay";
-import { usePreferences } from "../providers/preferences-provider";
 
 const StarModel = ({
   position,
@@ -14,11 +13,11 @@ const StarModel = ({
   ...starProps
 }: StarObject & { index: number }) => {
   const { scene } = useGLTF("/models/Star.glb");
-  const { shouldShowTitle, setShouldShowTitle } = usePreferences();
+  const { selectBill } = useCosmosContext();
   const meshRef = useRef<Group>(null);
 
   const handleClick = () => {
-    console.log(`Star clicked! Name: ${name}, Index in matrix: ${index}`);
+    selectBill(starProps.billId);
   };
 
   const clonedScene = scene.clone();
@@ -28,11 +27,14 @@ const StarModel = ({
     position,
     scale,
     name,
-    ...starProps
+    ...starProps,
   };
 
-  const randomRotation = [Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI, Math.random() * 2 * Math.PI];
-
+  const randomRotation = [
+    Math.random() * 2 * Math.PI,
+    Math.random() * 2 * Math.PI,
+    Math.random() * 2 * Math.PI,
+  ];
 
   return (
     <>
@@ -44,7 +46,7 @@ const StarModel = ({
         scale={scale}
         onClick={handleClick}
       />
-      <NameOverlay 
+      <NameOverlay
         star={starObject}
         position={position}
         maxDistance={8}

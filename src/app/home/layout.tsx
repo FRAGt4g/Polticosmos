@@ -1,6 +1,7 @@
 "use client";
 
 import { useCosmosContext } from "~/components/providers/cosmos-provider";
+import SearchBar from "~/components/searchbar";
 import { BillSidebarSummary } from "~/components/sidebar/sidebar-bill-summary";
 import {
   SidebarBody,
@@ -37,6 +38,7 @@ const Inner = ({ children }: { children: React.ReactNode }) => {
       >
         {selectedBill && <BillSidebarSummary bill={selectedBill} />}
       </SidebarBody>
+      <SearchBar />
       {children}
     </SidebarProvider>
   );

@@ -9,41 +9,82 @@ import type { StarMatrix } from "~/lib/types";
 const ThreeJSScene = () => {
   const starMatrix: StarMatrix = {
     objects: [
-      { 
-        position: [0, 0, 0], 
-        scale: 0.5, 
+      {
+        position: [0, 0, 0],
+        scale: 0.5,
         name: "Polaris",
-        billId: "1"
+        billId: "119-hr-46",
       },
-      { 
-        position: [3, 1, -2], 
-        scale: 0.8, 
+      {
+        position: [3, 1, -2],
+        scale: 0.8,
         name: "Sirius",
-        billId: "1"
+        billId: "119-hr-42",
       },
-      { 
-        position: [-2, -1, 1], 
-        scale: 1.2, 
+      {
+        position: [-2, -1, 1],
+        scale: 1.2,
         name: "Betelgeuse",
-        billId: "1"
+        billId: "119-hr-37",
       },
-      { 
-        position: [1, 2, -3], 
-        scale: 0.6, 
+      {
+        position: [1, 2, -3],
+        scale: 0.6,
         name: "Vega",
-        billId: "2"
+        billId: "119-hr-41",
       },
-      { 
-        position: [-3, 0, 2], 
-        scale: 0.9, 
+      {
+        position: [-3, 0, 2],
+        scale: 0.9,
         name: "Rigel",
-        billId: "3"
+        billId: "119-hr-72",
       },
-      { 
-        position: [2, -2, -1], 
-        scale: 1.1, 
+      {
+        position: [2, -2, -1],
+        scale: 1.1,
         name: "Antares",
-        billId: "4"
+        billId: "119-hr-67",
+      },
+    ],
+  };
+
+  const dumbStarMatrix: StarMatrix = {
+    objects: [
+      {
+        position: [0, 0, 0],
+        scale: 0.5,
+        name: "Polaris",
+        billId: "119-hr-46",
+      },
+      {
+        position: [3, 1, -2],
+        scale: 0.8,
+        name: "Sirius",
+        billId: "119-hr-42",
+      },
+      {
+        position: [-2, -1, 1],
+        scale: 1.2,
+        name: "Betelgeuse",
+        billId: "119-hr-37",
+      },
+      {
+        position: [1, 2, -3],
+        scale: 0.6,
+        name: "Vega",
+        billId: "119-hr-41",
+      },
+      {
+        position: [-3, 0, 2],
+        scale: 0.9,
+        name: "Rigel",
+        billId: "119-hr-72",
+      },
+      {
+        position: [2, -2, -1],
+        scale: 1.1,
+        name: "Antares",
+        billId: "119-hr-67",
       },
     ],
   };
@@ -58,7 +99,8 @@ const ThreeJSScene = () => {
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={1} />
           <pointLight position={[-10, -10, -5]} intensity={0.5} />
-          <StarField matrix={starMatrix} />
+          {/* <StarField matrix={starMatrix} /> */}
+          <StarField matrix={dumbStarMatrix} />
           <CustomPointerLockControls />
         </Suspense>
       </Canvas>

@@ -16,12 +16,13 @@ export default function ScrollArea({
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const deadzone = 10;
 
   const checkScrollPosition = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth);
+      setCanScrollLeft(scrollLeft > deadzone);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - deadzone);
     }
   };
 
@@ -30,8 +31,9 @@ export default function ScrollArea({
     if (scrollElement) {
       checkScrollPosition();
       scrollElement.addEventListener("scroll", checkScrollPosition);
-      return () =>
+      return () => {
         scrollElement.removeEventListener("scroll", checkScrollPosition);
+      };
     }
   }, []);
 
