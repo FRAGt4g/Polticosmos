@@ -145,7 +145,7 @@ export const DesktopSidebar = ({
   side?: "left" | "right";
   spacing?: number;
 }) => {
-  const { setSelectedStar } = useCosmosContext();
+  const { deselectBill } = useCosmosContext();
   const { open, sidebarWidth } = useSidebar();
   const [disableAnimation, setDisableAnimation] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
@@ -195,11 +195,10 @@ export const DesktopSidebar = ({
       }}
       {...props}
     >
-      <div className="absolute top-0 right-0 z-10">
+      <div className="absolute top-0 right-0 z-10 mt-4 mr-4">
         <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setSelectedStar(null)}
+          className="rounded-full border-none bg-transparent hover:bg-transparent"
+          onClick={deselectBill}
         >
           <X />
         </Button>

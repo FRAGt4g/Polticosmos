@@ -9,7 +9,7 @@ const StarField = ({ matrix }: { matrix: StarMatrix }) => {
           key={index}
           position={starObj.position}
           scale={starObj.scale}
-          index={index}
+          billId={starObj.billId}
         />
       ))}
     </>

@@ -1,16 +1,43 @@
 export interface StarObject {
   position: [number, number, number];
   scale: number;
+  billId: string;
 }
 
 export type StarMatrix = {
   objects: StarObject[];
 };
 
-export type BillSideBarInfo = {
+export type Star = {
+  id: string;
+  name: string;
+  constellation: string;
+  distance: string;
+  magnitude: number;
+  spectralType: string;
+  description: string;
+  facts: string[];
+  x: number;
+  y: number;
+  size: number;
+  color: string;
+  twinkleDelay: number;
+  bill?: Bill;
+};
+
+export type Senator = {
+  id: number;
+  name: string;
+  state: string;
+  party: "Republican" | "Democrat" | "Independent";
+  bills: Bill[];
+};
+
+export type Bill = {
+  id: string;
   name: string;
   committeeOrigination: string;
-  sponsors: Sponsor[];
+  sponsors: BillSponsor[];
   summary: string;
   republicanSponsors: number;
   democratSponsors: number;
@@ -20,10 +47,10 @@ export type BillSideBarInfo = {
   senateVoterPercentageBar: VoterPercentageBar;
   mediaCoverage: string;
   linkToPdf: URL;
-  status: BillStatus;
+  statusHistory: BillStatus[];
 };
 
-export type Sponsor = {
+export type BillSponsor = {
   name: string;
   party: "Republican" | "Democrat" | "Independent";
 };
@@ -61,20 +88,3 @@ export type Preferences = {
 
 export type PREFERENCE_Theme = "dark" | "light" | "system";
 export type PREFERENCE_SidebarChoice = "left" | "right";
-
-export interface Star {
-  id: number;
-  name: string;
-  constellation: string;
-  distance: string;
-  magnitude: number;
-  spectralType: string;
-  description: string;
-  facts: string[];
-  x: number;
-  y: number;
-  size: number;
-  color: string;
-  twinkleDelay: number;
-  bill?: BillSideBarInfo;
-}

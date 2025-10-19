@@ -1,10 +1,6 @@
-import { FileText } from "lucide-react";
+import { ArrowRight, FileText } from "lucide-react";
 import ScrollArea from "~/components/helpers/scroll-area-fade";
-import {
-  type BillSideBarInfo,
-  type BillStatus,
-  type Sponsor,
-} from "~/lib/types";
+import { type Bill, type BillSponsor, type BillStatus } from "~/lib/types";
 import { cn } from "~/lib/utils";
 import { SingleBarVisualizer, YayNayBarVisualizer } from "../BarVisualizer";
 import { HStack, VStack } from "../helpers/helperdivs";
@@ -33,7 +29,7 @@ const StatusChip = ({ status }: { status: BillStatus }) => {
   );
 };
 
-const SponsorsChip = ({ sponsor }: { sponsor: Sponsor }) => {
+const SponsorsChip = ({ sponsor }: { sponsor: BillSponsor }) => {
   const colors = {
     Republican: "bg-red-500 hover:bg-red-600/90",
     Democrat: "bg-blue-500 hover:bg-blue-600/90",
@@ -53,25 +49,19 @@ const SponsorsChip = ({ sponsor }: { sponsor: Sponsor }) => {
   );
 };
 
-export const BillSidebarSummary = ({ bill }: { bill: BillSideBarInfo }) => {
+export const BillSidebarSummary = ({ bill }: { bill: Bill }) => {
   return (
     <VStack xSpacing="center" gap={10} className="py-4">
       <VStack xSpacing="center">
         {/* Header */}
-        <h1 className="text-2xl font-bold">{bill.name}</h1>
-
         <HStack xSpacing="between" ySpacing="middle">
-          {/* PDF Copy */}
-          <Button
-            variant="default"
-            size="default"
-            onClick={() => window.open(bill.linkToPdf.toString(), "_blank")}
-          >
-            <FileText /> View PDF Copy
-          </Button>
+          <h1 className="text-2xl font-bold">{bill.name}</h1>
 
-          <StatusChip status={bill.status} />
+          <StatusChip
+            status={bill.statusHistory[bill.statusHistory.length - 1]!}
+          />
         </HStack>
+
         <div className="bg-muted/20 h-px w-full" />
       </VStack>
 
@@ -79,6 +69,25 @@ export const BillSidebarSummary = ({ bill }: { bill: BillSideBarInfo }) => {
       <VStack className="w-full px-2">
         <h2 className="text-lg font-bold">Description</h2>
         <p className="text-muted-foreground text-sm">{bill.summary}</p>
+      </VStack>
+
+      {/* Timeline of Status Changes */}
+      <VStack className="w-full px-2">
+        <HStack className="w-full" xSpacing="between" ySpacing="middle">
+          <h2 className="w-fit text-center text-lg font-bold">
+            Status Timeline
+          </h2>
+        </HStack>
+        <ScrollArea gap={1}>
+          {bill.statusHistory.map((status, index) => (
+            <HStack key={index} xSpacing="between" ySpacing="middle" gap={1}>
+              <StatusChip status={status} />
+              {index !== bill.statusHistory.length - 1 && (
+                <ArrowRight className="text-muted-foreground h-4 w-4" />
+              )}
+            </HStack>
+          ))}
+        </ScrollArea>
       </VStack>
 
       {/* Sponsors */}
@@ -113,6 +122,16 @@ export const BillSidebarSummary = ({ bill }: { bill: BillSideBarInfo }) => {
           />
         </HStack>
       </VStack>
+
+      {/* PDF Copy */}
+      <Button
+        className="absolute right-0 bottom-0 mx-4 mb-4"
+        variant="default"
+        size="default"
+        onClick={() => window.open(bill.linkToPdf.toString(), "_blank")}
+      >
+        <FileText /> View PDF Copy
+      </Button>
     </VStack>
   );
 };

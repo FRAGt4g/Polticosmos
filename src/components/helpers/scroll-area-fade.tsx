@@ -7,9 +7,11 @@ import { cn } from "~/lib/utils";
 export default function ScrollArea({
   gradientEnd = "from-primary/90 via-primary/20",
   children,
+  gap = 2,
 }: {
   gradientEnd?: string;
   children: React.ReactNode;
+  gap?: number;
 }) {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -38,7 +40,9 @@ export default function ScrollArea({
       <HStack
         ref={scrollRef}
         xSpacing="around"
-        className="scrollbar-hide h-fit max-w-full gap-2 overflow-x-auto overflow-y-hidden"
+        ySpacing="middle"
+        gap={gap}
+        className="scrollbar-hide h-fit max-w-full overflow-x-auto overflow-y-hidden"
       >
         {children}
       </HStack>

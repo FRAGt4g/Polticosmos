@@ -1,11 +1,16 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
-import { type BillSideBarInfo } from "~/lib/types";
+import { getBill } from "~/app/api/safe-fetches";
+import { type Bill } from "~/lib/types";
 
 interface CosmosContextType {
-  selectedStar: BillSideBarInfo | null;
-  setSelectedStar: (star: BillSideBarInfo | null) => void;
+  selectedBill: Bill | null;
+  setSelectedBill: (bill: Bill | null) => void;
+  loadedBills: Record<string, Bill>;
+  setLoadedBills: (bills: Record<string, Bill>) => void;
+  selectBill: (billId: string) => Promise<void>;
+  deselectBill: () => void;
 }
 
 const CosmosContext = createContext<CosmosContextType | undefined>(undefined);
@@ -19,13 +24,40 @@ export function useCosmosContext() {
 }
 
 export function CosmosProvider({ children }: { children: React.ReactNode }) {
-  const [selectedStar, setSelectedStar] = useState<BillSideBarInfo | null>(
-    null,
-  );
+  const [loadedBills, setLoadedBills] = useState<Record<string, Bill>>({});
+  const [selectedBill, setSelectedBill] = useState<Bill | null>(null);
+
+  async function selectBill(billId: string) {
+    if (loadedBills[billId]) {
+      setSelectedBill(loadedBills[billId]);
+      return;
+    }
+
+    const bill = await getBill(billId);
+    if (bill) {
+      setLoadedBills((prev) => ({ ...prev, [billId]: bill }));
+      setSelectedBill(bill);
+    } else {
+      console.error(`Bill ${billId} not found`);
+      setSelectedBill(null);
+    }
+  }
+
+  function deselectBill() {
+    console.log("Deselecting bill");
+    setSelectedBill(null);
+  }
+
+  const values: CosmosContextType = {
+    selectedBill,
+    setSelectedBill,
+    loadedBills,
+    setLoadedBills,
+    selectBill,
+    deselectBill,
+  };
 
   return (
-    <CosmosContext.Provider value={{ selectedStar, setSelectedStar }}>
-      {children}
-    </CosmosContext.Provider>
+    <CosmosContext.Provider value={values}>{children}</CosmosContext.Provider>
   );
 }
