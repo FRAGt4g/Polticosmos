@@ -1,0 +1,12 @@
+{
+    "summary": "This bill addresses the issue of \"Misbehaving Content Scrapers.\" The text indicates a situation where a scraper is violating terms of service by ignoring robots.txt and facing rate limiting. It instructs the scraper to use the GPO.gov Bulk Data Download service for data access. The bill's intent, while unclear from this brief snippet, likely aims to regulate web scraping activities and enforce proper data access protocols, potentially to prevent denial-of-service or undue strain on websites.",
+    "tags": [
+        "Technology regulation",
+        "Consumer protection",
+        "Privacy",
+        "Transparency",
+        "Federal agency action",
+        "Cybersecurity"
+    ],
+    "category": "Technology & Innovation"
+}

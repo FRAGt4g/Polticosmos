@@ -1,0 +1,11 @@
+{
+    "summary": "This bill addresses the issue of web scraping, specifically targeting those who misbehave. It directs individuals to adhere to robots.txt and specifies that their IP address might be rate limited. Furthermore, it suggests using the GPO.gov Bulk Data Download service (https://www.gpo.gov/fdsys/bulkdata/) as an alternative for data acquisition. The bill essentially outlines responsible methods for data collection from government sources, mainly concerned with accessibility and proper usage of online resources.",
+    "tags": [
+        "Technology regulation",
+        "Privacy",
+        "Transparency",
+        "Federal agency action",
+        "Consumer protection"
+    ],
+    "category": "Technology & Innovation"
+}

@@ -1,0 +1,13 @@
+{
+    "summary": "This bill addresses the issue of \"Misbehaving Content Scrapers\", likely targeting web scraping bots that violate terms of service, disregard robots.txt directives, or are excessively rate-limited. It provides a directive to utilize the GPO.gov Bulk Data Download service for accessing information instead of scraping. It aims to improve data access compliance and system stability, particularly regarding the gathering of information from government resources.",
+    "tags": [
+        "Technology regulation",
+        "Cybersecurity",
+        "Privacy",
+        "Transparency",
+        "Consumer protection",
+        "Public safety",
+        "Federal agency action"
+    ],
+    "category": "Technology & Innovation"
+}

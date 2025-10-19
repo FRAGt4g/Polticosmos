@@ -1,0 +1,11 @@
+{
+    "summary": "This bill addresses the issue of \"Misbehaving Content Scrapers.\" It instructs these scrapers to respect robots.txt rules, implying a focus on website accessibility and ethical data collection practices. It also mentions rate limiting based on IP addresses, indicating measures to prevent excessive scraping. The bill promotes the use of the GPO.gov Bulk Data Download (https://www.gpo.gov/fdsys/bulkdata/) as an alternative.",
+    "tags": [
+        "Technology regulation",
+        "Privacy",
+        "Transparency",
+        "Cybersecurity",
+        "Consumer protection"
+    ],
+    "category": "Technology & Innovation"
+}

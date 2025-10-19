@@ -1,0 +1,12 @@
+{
+    "summary": "This bill addresses the actions of a \"Misbehaving Content Scraper.\" It instructs the scraper to respect robots.txt rules and acknowledges that its IP address has been rate limited. The bill suggests using the GPO.gov Bulk Data Download service for data access. The specifics of what the scraper is scraping or the implications of its misbehavior are not detailed.",
+    "tags": [
+        "Technology regulation",
+        "Cybersecurity",
+        "Privacy",
+        "Consumer protection",
+        "Transparency",
+        "Federal agency action"
+    ],
+    "category": "Technology & Innovation"
+}

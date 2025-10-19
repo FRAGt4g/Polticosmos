@@ -1,0 +1,11 @@
+{
+    "summary": "This bill addresses the issue of \"Misbehaving Content Scrapers.\" The text indicates a website or online service is experiencing difficulties with automated data collection (scraping). It advises the scraper to respect robots.txt rules, mentions rate limiting due to excessive requests, and suggests using the GPO.gov Bulk Data Download service as an alternative for accessing data. The bill implicitly aims to regulate automated data acquisition and ensure fair and proper resource usage.",
+    "tags": [
+        "Technology regulation",
+        "Privacy",
+        "Consumer protection",
+        "Transparency",
+        "Cybersecurity"
+    ],
+    "category": "Technology & Innovation"
+}

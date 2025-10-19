@@ -1,0 +1,13 @@
+{
+    "summary": "This bill addresses the issue of web scrapers accessing government data. It instructs users to comply with robots.txt, mentions a rate limit on the user's IP address, and directs users to the GPO.gov Bulk Data Download website for data access. Essentially, it's a clarification of acceptable data access methods and a warning against excessive scraping. The bill promotes responsible data usage and access to government information.",
+    "tags": [
+        "Technology regulation",
+        "Cybersecurity",
+        "Privacy",
+        "Transparency",
+        "Federal agency action",
+        "Public safety",
+        "Consumer protection"
+    ],
+    "category": "Technology & Innovation"
+}

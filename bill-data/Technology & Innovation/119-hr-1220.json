@@ -1,0 +1,13 @@
+{
+    "summary": "This bill addresses the issue of web scraping behavior, specifically targeting those who misbehave. It directs scrapers to adhere to robots.txt guidelines and indicates penalties for rate limiting (likely on the Government Publishing Office's resources). The bill suggests use of GPO.gov's bulk data download as an alternative to scraping. The focus is on responsible data use and access within a government context.",
+    "tags": [
+        "Technology regulation",
+        "Privacy",
+        "Transparency",
+        "Cybersecurity",
+        "Federal agency action",
+        "Public safety",
+        "Consumer protection"
+    ],
+    "category": "Technology & Innovation"
+}

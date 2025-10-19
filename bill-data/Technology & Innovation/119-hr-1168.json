@@ -1,0 +1,11 @@
+{
+    "summary": "This short bill addresses the improper use of web scraping technology, specifically targeting 'Misbehaving Content Scrapers.' It directs users to adhere to robots.txt rules and acknowledges IP rate limiting. The bill suggests utilizing the GPO.gov Bulk Data Download service for accessing data, which indicates a focus on accessing and potentially protecting government data.",
+    "tags": [
+        "Technology regulation",
+        "Privacy",
+        "Transparency",
+        "Cybersecurity",
+        "Consumer protection"
+    ],
+    "category": "Technology & Innovation"
+}

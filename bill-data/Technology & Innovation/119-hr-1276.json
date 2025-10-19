@@ -1,0 +1,11 @@
+{
+    "summary": "This bill addresses the issue of \"Misbehaving Content Scrapers.\" The bill instructs content scrapers to adhere to the robots.txt protocol and, if rate limited, to utilize the GPO.gov Bulk Data Download service located at https://www.gpo.gov/fdsys/bulkdata/. The bill appears to be aimed at regulating online data collection practices.",
+    "tags": [
+        "Technology regulation",
+        "Cybersecurity",
+        "Privacy",
+        "Consumer protection",
+        "Transparency"
+    ],
+    "category": "Technology & Innovation"
+}

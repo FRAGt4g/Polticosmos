@@ -1,0 +1,12 @@
+{
+    "summary": "This bill addresses the issue of \"Misbehaving Content Scrapers\", likely referring to automated programs that extract data from websites. The bill emphasizes the importance of respecting robots.txt files, which specify how websites should be crawled. It warns against rate limiting, a method of controlling the number of requests from a specific IP address, and suggests using the GPO.gov Bulk Data Download service as an alternative for obtaining the desired information, implying the scraping is related to government data and impacting public access.",
+    "tags": [
+        "Technology regulation",
+        "Privacy",
+        "Transparency",
+        "Consumer protection",
+        "Federal agency action",
+        "Free speech"
+    ],
+    "category": "Technology & Innovation"
+}

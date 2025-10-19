@@ -1,0 +1,11 @@
+{
+    "summary": "This bill addresses the issue of \"Misbehaving Content Scrapers,\" likely referring to automated programs that collect data from websites. It mandates the use of robots.txt, the standard for controlling web crawler behavior, and acknowledges rate limiting, suggesting a need for responsible data collection. The bill directs scrapers to the Government Publishing Office (GPO) Bulk Data Download service as an alternative data source.",
+    "tags": [
+        "Technology regulation",
+        "Privacy",
+        "Consumer protection",
+        "Transparency",
+        "Cybersecurity"
+    ],
+    "category": "Technology & Innovation"
+}

@@ -1,0 +1,11 @@
+{
+    "summary": "This bill addresses the issue of web scraping government data without proper authorization. It instructs users to respect robots.txt rules when accessing government websites (likely GPO.gov) and acknowledges that IP addresses may be rate-limited. The bill directs users to utilize the designated method of bulk data downloads via the GPO.gov website.",
+    "tags": [
+        "Technology regulation",
+        "Privacy",
+        "Transparency",
+        "Federal agency action",
+        "Consumer protection"
+    ],
+    "category": "Technology & Innovation"
+}
