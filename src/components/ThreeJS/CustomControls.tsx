@@ -135,15 +135,19 @@ const CustomPointerLockControls = () => {
     // Calculate movement based on camera orientation
     if (keys.w) {
       desiredVelocity.add(cameraDirection.clone().multiplyScalar(1));
+      isPanningRef.current = false;
     }
     if (keys.s) {
       desiredVelocity.add(cameraDirection.clone().multiplyScalar(-1));
+      isPanningRef.current = false;
     }
     if (keys.a) {
       desiredVelocity.add(rightDirection.clone().multiplyScalar(-1));
+      isPanningRef.current = false;
     }
     if (keys.d) {
       desiredVelocity.add(rightDirection.clone().multiplyScalar(1));
+      isPanningRef.current = false;
     }
 
     if (desiredVelocity.length() > 0) {
