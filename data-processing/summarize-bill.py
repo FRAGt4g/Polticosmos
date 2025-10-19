@@ -1,9 +1,21 @@
-from google import genai
+import os
 import psycopg2
 import requests
-import re
+import json
+from xml.etree import ElementTree
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from openai import OpenAI
 
-client = genai.Client()
+# Initialize client
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key="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",
+)
+
+lines=[]
+with open("complete.txt", 'r') as f:
+    for line in f:
+        lines.append(line[:-1])
 
 # All possible tags for bills
 TAGS = [
@@ -34,74 +46,108 @@ CATEGORIES = [
     "Family & Social Services"
 ]
 
+
+def xml_to_text(xml_string):
+    """Convert XML to plain text."""
+    try:
+        root = ElementTree.fromstring(xml_string)
+        return ''.join(root.itertext()).strip()
+    except ElementTree.ParseError as e:
+        print(f"Error parsing XML: {e}")
+        return ""
+
+
+def get_bill_text(uid):
+    """Scrape bill text from congress.gov XML."""
+    try:
+        congress, chamber, number = uid.split("-")
+        xml = requests.get(
+            f"https://www.congress.gov/{congress}/bills/{chamber}{number}/BILLS-{congress}{chamber}{number}ih.xml",
+            timeout=10
+        ).text
+        if 'DOCTYPE html' in xml:
+            print(f"https://www.congress.gov/{congress}/bills/{chamber}{number}/BILLS-{congress}{chamber}{number}ih.xml")
+            os._exit(0)
+        return xml_to_text(xml)
+    except Exception as e:
+        print(f"Failed to fetch bill {uid}: {e}")
+        return ""
+
+
 def call_gemini_api(bill_text, tags, categories):
-    # Construct the prompt to guide the LLM
+    """Call LLM API."""
     prompt = f"""
     You are tasked with processing a congressional bill. Here is the bill text:
-    
-    "{bill_text}"
-    
-    Please perform the following tasks:
-    1. Generate a concise 100-word summary of the bill.
-    2. Create a list of relevant tags based on the bill's content. Use the tags from the list below:
-        {', '.join(tags)}
-    3. Assign a single category to the bill from the list below:
-        {', '.join(categories)}
 
-    Please output the response text in a JSON format similar to below:
+    "{bill_text}"
+
+    Please:
+    1. Summarize the bill in ~100 words.
+    2. Suggest relevant tags from: {', '.join(tags)}
+    3. Pick one category from: {', '.join(categories)}
+
+    Return JSON:
     {{
-        "summary": "This bill aims to prevent gun trafficking by introducing new criminal penalties for trafficking firearms. Violators could face up to 20 years in prison, and the U.S. Sentencing Commission is directed to review sentencing guidelines. It also allows exceptions for certain firearm gifts and ensures stricter penalties for those involved in large-scale trafficking operations.",
-        "tags": ["Gun trafficking", "Firearm regulation", "Criminal justice", "National security"],
-        "category": "Legislation & Policy"
+        "summary": "...",
+        "tags": [...],
+        "category": "..."
     }}
     """
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt,
-    )
+    try:
+        response = client.chat.completions.create(
+            model="google/gemini-2.0-flash-lite-001",
+            messages=[{"role": "user", "content": [{"type": "text", "text": prompt}]}]
+        )
+        print(response.choices[0].message.content.replace("```json", "").replace("```", "").strip())
+        return response.choices[0].message.content.replace("```json", "").replace("```", "").strip()
+    except Exception as e:
+        print(f"API error: {e}")
+        return ""
 
-    return reponse.text
 
-# Define the function to save the output to a JSON file
-def save_LLM_response_to_json(response_text, filename="bill_summary.json"):
-    output_data = json.loads(response_text)
-    output_dir = f"../bill-data/{output_data["category"]}/"
-    with open(output_dir + filename, "w") as f:
-        json.dump(output_data, f, indent=4)
+def save_LLM_response_to_json(response_text, filename):
+    """Save API response JSON to file."""
+    try:
+        output_data = json.loads(response_text)
+        category = output_data.get("category", "Uncategorized")
+        output_dir = os.path.join("..", "bill-data", category)
+        os.makedirs(output_dir, exist_ok=True)
+        with open(os.path.join(output_dir, filename), "w") as f:
+            json.dump(output_data, f, indent=4)
+    except Exception as e:
+        print(f"Failed to save {filename}: {e}")
 
-def process_bill(bill_text, tags, categories, filename="bill_summary.json"):
-    # Call the Gemmini API to get the bill summary, tags, and category
-    response_text = call_gemini_api(bill_text, tags, categories)
 
-    # If the result is valid, save the output to a JSON file
-    if result:
-        save_LLM_response_to_json(response_text, filename)
+def process_bill(uid):
+    """Full pipeline for a single bill."""
+    bill_text = get_bill_text(uid)
+    if not bill_text:
+        return f"{uid}: Failed to fetch text."
+    return "fetched text."
+    #response_text = call_gemini_api(bill_text, TAGS, CATEGORIES)
+    #if not response_text:
+    #    return f"{uid}: API error."
 
-# Scrape raw text from congress given a specific bill uid
-def get_bill_text(uid):
-    congress = uid.split("-")[0]
-    chamber = "house" if uid.split("-")[1] == "hr" else "senate"
-    number = uid.split("-")[2]
-    html = requests.get(f"https://www.congress.gov/bill/{congress}th-congress/{chamber}-bill/{number}/text/pcs?format=txt").text
+    #save_LLM_response_to_json(response_text, f"{uid}.json")
+    #return f"{uid}: Done."
 
-    return re.search('(?<=<pre id="billTextContainer">)((.|\n)*)(?=</pre>)').group(1)
 
-if __name__ == '__main__':
-    # Connect to the bill database
+if __name__ == "__main__":
+    # Connect to database
     conn = psycopg2.connect(
         dbname="postgres",
         user="postgres",
         password="dev",
-        host="fe80::14b2:c1e1:3c47:8748%en0"
+        host="75.81.64.177"
     )
-
-    # Fetch every row in the database (where each one represents a different bill)
     cursor = conn.cursor()
     cursor.execute("SELECT uid FROM bills")
-    bill_uids = cursor.fetchall()
+    bill_uids = [uid[0] for uid in cursor.fetchall() if uid[0] not in lines]
 
-    for uid in bill_uids:
-        bill_text = get_bill_text(uid)
-        filename = f"{uid}.json"
-        process_bill(bill_text, TAGS, CATEGORIES, filename)
+    # === Run parallel threads ===
+    MAX_WORKERS = 1000
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {executor.submit(process_bill, uid): uid for uid in bill_uids}
+        for future in as_completed(futures):
+            print(future.result())
